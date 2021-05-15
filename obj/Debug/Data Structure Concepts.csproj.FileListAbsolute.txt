@@ -1,0 +1,24 @@
+C:\Users\abhisheksharma\source\repos\TestProject\bin\Debug\TestProject.exe.config
+C:\Users\abhisheksharma\source\repos\TestProject\bin\Debug\TestProject.exe
+C:\Users\abhisheksharma\source\repos\TestProject\bin\Debug\TestProject.pdb
+C:\Users\abhisheksharma\source\repos\TestProject\bin\Debug\C5.dll
+C:\Users\abhisheksharma\source\repos\TestProject\bin\Debug\Newtonsoft.Json.dll
+C:\Users\abhisheksharma\source\repos\TestProject\bin\Debug\C5.xml
+C:\Users\abhisheksharma\source\repos\TestProject\bin\Debug\Newtonsoft.Json.xml
+C:\Users\abhisheksharma\source\repos\TestProject\obj\Debug\Data Structure Concepts.csprojAssemblyReference.cache
+C:\Users\abhisheksharma\source\repos\TestProject\obj\Debug\Data Structure Concepts.csproj.CoreCompileInputs.cache
+C:\Users\abhisheksharma\source\repos\TestProject\obj\Debug\Data Structure Concepts.csproj.CopyComplete
+C:\Users\abhisheksharma\source\repos\TestProject\obj\Debug\TestProject.exe
+C:\Users\abhisheksharma\source\repos\TestProject\obj\Debug\TestProject.pdb
+C:\Users\abhisheksharma\source\repos\Data Strcuture\bin\Debug\TestProject.exe.config
+C:\Users\abhisheksharma\source\repos\Data Strcuture\bin\Debug\TestProject.exe
+C:\Users\abhisheksharma\source\repos\Data Strcuture\bin\Debug\TestProject.pdb
+C:\Users\abhisheksharma\source\repos\Data Strcuture\bin\Debug\C5.dll
+C:\Users\abhisheksharma\source\repos\Data Strcuture\bin\Debug\Newtonsoft.Json.dll
+C:\Users\abhisheksharma\source\repos\Data Strcuture\bin\Debug\C5.xml
+C:\Users\abhisheksharma\source\repos\Data Strcuture\bin\Debug\Newtonsoft.Json.xml
+C:\Users\abhisheksharma\source\repos\Data Strcuture\obj\Debug\Data Structure Concepts.csprojAssemblyReference.cache
+C:\Users\abhisheksharma\source\repos\Data Strcuture\obj\Debug\Data Structure Concepts.csproj.CoreCompileInputs.cache
+C:\Users\abhisheksharma\source\repos\Data Strcuture\obj\Debug\Data Structure Concepts.csproj.CopyComplete
+C:\Users\abhisheksharma\source\repos\Data Strcuture\obj\Debug\TestProject.exe
+C:\Users\abhisheksharma\source\repos\Data Strcuture\obj\Debug\TestProject.pdb
