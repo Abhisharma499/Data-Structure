@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using TestProject.Problems;
 
 namespace DataStructure
 {
@@ -13,7 +14,7 @@ namespace DataStructure
 
         static void Main()
         {
-            SmallestSubarrayWithGreaterThanGivenSum(new int[] { 1,10,3,40,18 }, 50);
+           int result =  Microsoft_Latetst_Questions.LongestSemiAlternatingSubstring("abaaaa");
 
         }
 
@@ -63,7 +64,6 @@ namespace DataStructure
 
             return result;
         }
-
 
         public static int CountTripletsWithSumEqual(List<int> numbers, int target)
         {
@@ -144,7 +144,6 @@ namespace DataStructure
             return result;
 
         }
-
 
         public static int SmallestSubarrayWithGivenSum(int[] numbers, int target)
         {

@@ -10,7 +10,7 @@ namespace TestProject.Problems
         public TreeNode right;
         public int val;
     }
-    class Microsoft_Latetst_Questions
+   public class Microsoft_Latetst_Questions
     {
         public int GoodNodes(TreeNode root)
         {
@@ -314,7 +314,44 @@ namespace TestProject.Problems
 
         }
 
-        public static int MinMovestoMakeStringWithout3IdenticalConsecutiveLetters(string input)
+        public static int LongestSemiAlternatingSubstring(string input)
+        {
+            if(string.IsNullOrEmpty(input))
+            {
+                return 0;
+            }
+
+            if(input.Length < 2)
+            {
+                return input.Length;
+            }
+
+            //baaabbabbb
+
+            int result = 2;
+            int runningCount = 2;
+
+            for(int i=2;i<input.Length;i++)
+            {
+                if(input[i]==input[i-1] && input[i] == input[i - 2])
+                {
+                    
+                    result = Math.Max(result, runningCount);
+                    runningCount = 2;
+                }
+                else
+                {
+                    runningCount++;
+                    result = Math.Max(result, runningCount);
+                }
+            }
+
+            result = Math.Max(result, runningCount);
+
+            return result;
+        }
+
+        public static int StringWithout3IdenticalConsecutiveLetters(string input)
         {
             if (string.IsNullOrEmpty(input))
             {
@@ -347,6 +384,8 @@ namespace TestProject.Problems
 
         public int MinimumDeletionCosttoAvoidRepeatingLetters(string s, int[] cost)
         {
+      
+            // Input: s = "abaaac", cost = [1, 2, 3, 4,3, 5]
             var sum = 0;
             for (var i = 1; i < s.Length; i++)
             {
