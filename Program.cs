@@ -5,10 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using TestProject.Problems;
 
-namespace OverrideAndNew2
+namespace DataStructure
 {
-
-
     public class Program
     {
 
