@@ -14,7 +14,7 @@ namespace DataStructure
 
         static void Main()
         {
-           int result =  Microsoft_Latetst_Questions.LongestSemiAlternatingSubstring("abaaaa");
+           int result =  Microsoft_Latetst_Questions.WaysToMakeFairIndex(new int[] {2, 1, 6, 4 });
 
         }
 

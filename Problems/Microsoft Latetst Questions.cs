@@ -124,6 +124,67 @@ namespace TestProject.Problems
 
         }
 
+        public static int WaysToMakeFairIndex(int[]numbers)
+        {
+            int[] evenCumulativeSum = new int[numbers.Length];
+            int[] oddCumulativeSum = new int[numbers.Length];
+            int evenTemp = 0;
+            int oddTemp = 0;
+            int i = 0;
+
+            for (i=0;i<numbers.Length;i++)
+            {
+                if(i % 2 == 0)
+                {
+                    evenTemp += numbers[i];
+                    evenCumulativeSum[i]= evenTemp;
+                    if (i > 1)
+                        evenCumulativeSum[i-1] = evenCumulativeSum[i - 2];
+                }
+                else
+                {
+                    oddTemp += numbers[i];
+                    oddCumulativeSum[i]= oddTemp;
+                    if (i > 1)
+                        oddCumulativeSum[i-1] = oddCumulativeSum[i - 2];
+                }
+            }
+
+            if((i-1)%2==0)
+            {
+                oddCumulativeSum[i - i] = oddCumulativeSum[i - 2];
+            }
+            else
+            {
+                evenCumulativeSum[i - 1] = evenCumulativeSum[i - 2];
+            }
+
+            
+
+            int evensumRunning, oddsumRunning;
+            int result = 0;
+            for (i = 0; i < numbers.Length; i++)
+            {
+                if(i % 2 == 0)
+                {
+                    evensumRunning = evenCumulativeSum[i] - numbers[i] + oddCumulativeSum[oddCumulativeSum.Length - 1] - oddCumulativeSum[i];
+                    oddsumRunning = oddCumulativeSum[i] + evenCumulativeSum[evenCumulativeSum.Length - 1] - numbers[i];
+                }
+                else
+                {
+                    evensumRunning = evenCumulativeSum[i] + oddCumulativeSum[oddCumulativeSum.Length - 1] - numbers[i];
+                    oddsumRunning = oddCumulativeSum[i] - numbers[i] + evenCumulativeSum[evenCumulativeSum.Length - 1] - evenCumulativeSum[i];
+                }
+
+                if(evensumRunning == oddsumRunning)
+                {
+                    result++;
+                }
+            }
+                
+            return result;
+        }
+
         public static int MinimumDeletionstoMakeCharacterFrequenciesUnique(string input)
         {
             Dictionary<char, int> frequencies = new Dictionary<char, int>();
