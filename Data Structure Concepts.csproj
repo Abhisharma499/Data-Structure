@@ -103,6 +103,7 @@
     <Compile Include="Problems\ReverseInt.cs" />
     <Compile Include="Design Patterns\Singleton.cs" />
     <Compile Include="Problems\SlidingWindow.cs" />
+    <Compile Include="Problems\SwapSort.cs" />
     <Compile Include="Problems\UnBoundedKnapsack.cs" />
     <Compile Include="Problems\RottingOranges.cs" />
     <Compile Include="Problems\SelectionSort.cs" />

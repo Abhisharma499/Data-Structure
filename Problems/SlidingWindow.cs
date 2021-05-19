@@ -8,6 +8,373 @@ namespace TestProject.Problems
 {
     class SlidingWindow
     {
+        public static string MinimumWindowSubstring(string large, string small)
+        {
+            if(small.Length > large.Length)
+            {
+                return string.Empty;
+            }
+            //time to practice
+            //toc
+
+            //tim
+            int i=0, j = 0;
+            int result = int.MaxValue;
+            Dictionary<char,int> smallDictionary = new Dictionary<char,int>();
+            Dictionary<char, int> largeDictionary = new Dictionary<char, int>();
+            int start=0, end=0;
+
+            foreach (char ch in small)
+            {
+                if(smallDictionary.ContainsKey(ch))
+                {
+                    smallDictionary[ch]++;
+                }
+                else
+                {
+                    smallDictionary.Add(ch, 1);
+                }
+            }
+
+            while(j<large.Length)
+            {
+                ///time to practice
+                  //toc
+                if (largeDictionary.ContainsKey(large[j]))
+                {
+                    largeDictionary[large[j]]++;
+                }
+                else
+                {
+                    largeDictionary.Add(large[j], 1);
+                }
+
+                while(!CheckOneDictionaryParentOfOther(largeDictionary,smallDictionary))
+                {
+                    if (j < large.Length-1)
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                    if (largeDictionary.ContainsKey(large[j]))
+                    {
+                        largeDictionary[large[j]]++;
+                    }
+                    else
+                    {
+                        largeDictionary.Add(large[j], 1);
+                    }
+                }
+
+                if(CheckOneDictionaryParentOfOther(largeDictionary, smallDictionary))
+                {
+                    result = Math.Min(result, j - i + 1);
+                    start = i; end = j;
+                }
+
+                //time to practice
+                //toc
+                while (CheckOneDictionaryParentOfOther(largeDictionary, smallDictionary))
+                {
+                    if(largeDictionary.ContainsKey(large[i]))
+                    {
+                        largeDictionary[large[i]]--;
+                    }
+                    
+                    if(largeDictionary[large[i]]==0)
+                    {
+                        largeDictionary.Remove(large[i]);
+                    }
+
+                    i++;
+                }
+
+                if(result > j - i + 2)
+                {
+                    result = j - i + 2;
+                    start = i==0?i:i-1;
+                    end = j;
+                }
+
+                j++;
+            }
+
+            if(result == int.MaxValue)
+            {
+                return string.Empty;
+            }
+            return large.Substring(start,end-start+1);
+        }
+
+        public static bool CheckOneDictionaryParentOfOther(Dictionary<char,int> large, Dictionary<char, int> small)
+        {
+            foreach(var keyValuePair in small)
+            {
+                if(!large.ContainsKey(keyValuePair.Key))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool CompareHashset(HashSet<char> a, HashSet<char> b)
+        {
+            if(a== null && b== null)
+            {
+                return true;
+            }
+
+            if (a == null || b == null)
+            {
+                return false;
+            }
+            if (a.Count != b.Count)
+            {
+                return false;
+            }
+
+            foreach(char ch in a)
+            {
+                if(!b.Contains(ch))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        public static int LongestSubstringWithKUnique(string input, int k)
+        {
+            int result = 0;
+            int i = 0, j = 0;
+            HashSet<char> hashset = new HashSet<char>();
+
+            while(j<input.Length)
+            {
+                hashset.Add(input[j]);
+
+                while(hashset.Count< k)
+                {
+                    j++;
+                    hashset.Add(input[j]);
+                }
+
+                if(hashset.Count == k)
+                {
+                    result = Math.Max(result, j - i + 1);
+                }
+
+                hashset.Remove(input[i]);
+                i++;
+                j++;
+            }
+
+            return result;
+        }
+
+        public static int LongestSubstringWithoutRepeating(string input)
+        {
+            int result = 0;
+            int i = 0, j = 0;
+            //abcabcbb
+            Dictionary<char,int> keyValuePairs = new Dictionary<char,int>();
+
+            //"pwwkew"  //abcabcbb
+            while (j < input.Length)
+            {
+                if(!keyValuePairs.ContainsKey(input[j]))
+                {
+                    keyValuePairs.Add(input[j], 1);
+                }
+                else
+                {
+                    keyValuePairs[input[j]]++;
+                }
+
+                if (keyValuePairs.Count == (j - i + 1))
+                {
+                    result = Math.Max(result, j - i + 1);
+                }
+
+                while (keyValuePairs.Count < (j - i + 1))
+                {
+                    if (keyValuePairs.ContainsKey(input[i]))
+                    {
+                        keyValuePairs[input[i]]--;
+                    }
+
+                    if (keyValuePairs[input[i]] == 0)
+                    {
+                        keyValuePairs.Remove(input[i]);
+                    }
+
+                    i++;
+                }
+
+                j++;
+            }
+
+            return result;
+        }
+        public static int LongestSubArrayOfSumK(int[] numbers , int sum)
+        {
+            int i = 0, j = 0;
+            int result = 0;
+            int csum = 0;
+
+            while(j<numbers.Length)
+            {
+                csum = csum + numbers[j];
+
+                while(csum < sum)
+                {
+                    j++;
+                    csum = csum + numbers[j];
+                }
+
+                if(csum == sum)
+                {
+                    result = Math.Max(j - i + 1, result);
+                }
+
+                csum -= numbers[i];
+                i++;
+                j++;
+
+            }
+
+            return result;
+        }
+        public static int MaxSubArrayWithSizeK(int[] numbers, int windowSize)
+        {
+            int i = 0, j = 0;
+            int result = 0;
+            int maxSum = 0;
+
+            while (j < numbers.Length)
+            {
+                result = result + numbers[j];
+
+                while ((j - i + 1) < windowSize)
+                {
+                    j++;
+                    result = result + numbers[j];
+                }
+
+                if (j - i + 1 == windowSize)
+                {
+                    maxSum = Math.Max(maxSum, result);
+                }
+
+                result = result - numbers[i];
+
+                i++;
+                j++;
+            }
+
+            return maxSum;
+
+        }
+
+        public static void FirstNegativeNumberInWindow(int[] numbers, int windowSize)
+        {
+            int i = 0, j = 0;
+            Queue<int> negatives = new Queue<int>();
+
+            while (j < numbers.Length)
+            {
+                if (numbers[j] < 0)
+                {
+                    negatives.Enqueue(numbers[j]);
+                }
+
+                while ((j - i + 1) < windowSize)
+                {
+                    j++;
+
+                    if (numbers[j] < 0)
+                    {
+                        negatives.Enqueue(numbers[j]);
+                    }
+                }
+
+                if ((j - i + 1) == windowSize)
+                {
+                    if (negatives.Count > 0)
+                    {
+                        Console.WriteLine(negatives.Peek());
+                    }
+                    else
+                    {
+                        Console.WriteLine("T");
+                    }
+                }
+
+                //12 -8 -7 8 -15 30 16 28
+
+                //-8,-8,-7,-15,-15,T
+                if (numbers[i] < 0)
+                {
+                    negatives.Dequeue();
+                }
+
+                i++;
+                j++;
+            }
+        }
+
+        public static void MaxOfAllSubArrayOfSizeK(int[] numbers, int windowSize)
+        {
+            int i = 0, j = 0;
+            List<int> maxNumbers = new List<int>();
+
+            while (j < numbers.Length)
+            {
+                if (maxNumbers.Count == 0)
+                {
+                    maxNumbers.Add(numbers[j]);
+                }
+                else if (maxNumbers[maxNumbers.Count - 1] <= numbers[j])
+                {
+                    maxNumbers.Add(numbers[j]);
+                }
+
+                while ((j - i + 1) < windowSize)
+                {
+                    j++;
+
+                    if (maxNumbers[maxNumbers.Count - 1] <= numbers[j])
+                    {
+                        maxNumbers.Add(numbers[j]);
+                    }
+                }
+
+                if ((j - i + 1) == windowSize)
+                {
+                    if (maxNumbers.Count > 0)
+                    {
+                        Console.WriteLine(maxNumbers[maxNumbers.Count - 1]);
+                    }
+                }
+
+                if (maxNumbers.Count > 0)
+                {
+                    if (maxNumbers[0] == numbers[i])
+                    {
+                        maxNumbers.RemoveAt(0);
+                    }
+                }
+
+                i++;
+                j++;
+            }
+        }
         public static int SlidingWindowMaxSum(int[] numbers, int windowSize)
         {
             ////2,3,5,2,9,7,1
@@ -16,8 +383,8 @@ namespace TestProject.Problems
             int sum = 0;
             int j;
             int i;
-           
-            for(i=0;i<windowSize;i++)
+
+            for (i = 0; i < windowSize; i++)
             {
                 sum += numbers[i];
             }
@@ -27,10 +394,10 @@ namespace TestProject.Problems
             i = 0;
             j = windowSize;
 
-            while(j< numbers.Length)
+            while (j < numbers.Length)
             {
                 sum = sum - numbers[i] + numbers[j];
-                result = Math.Max(result, sum);            
+                result = Math.Max(result, sum);
                 i++;
                 j++;
             }
@@ -229,24 +596,24 @@ namespace TestProject.Problems
             int i = 0, j = 0, sum = 0;
 
             //2518297
-            while(j< numbers.Length)
+            while (j < numbers.Length)
             {
                 sum = sum + numbers[j];
 
-                while(j-i+1< windowSize)
+                while (j - i + 1 < windowSize)
                 {
                     j++;
                     sum = sum + numbers[j];
                     continue;
                 }
 
-                if(j-i+1 == windowSize)
+                if (j - i + 1 == windowSize)
                 {
                     result = Math.Max(sum, result);
                 }
 
                 sum = sum - numbers[i];
-                
+
                 i++;
                 j++;
             }
@@ -265,10 +632,10 @@ namespace TestProject.Problems
                 sum = sum + numbers[j];
 
                 while (sum < k)
-                {                 
+                {
                     j++;
 
-                    if(j == numbers.Length)
+                    if (j == numbers.Length)
                     {
                         break;
                     }
@@ -279,7 +646,7 @@ namespace TestProject.Problems
 
                 if (sum == k)
                 {
-                    result = Math.Max(j-i+1, result);
+                    result = Math.Max(j - i + 1, result);
                 }
 
                 while (sum > k)
@@ -287,7 +654,7 @@ namespace TestProject.Problems
                     sum = sum - numbers[i];
                     i++;
                 }
-                
+
                 j++;
             }
 
@@ -341,7 +708,7 @@ namespace TestProject.Problems
                     if (numbers[j] < 0)
                     {
                         negativeNumbers.Enqueue(numbers[j]);
-                    }      
+                    }
                 }
 
 
@@ -367,13 +734,13 @@ namespace TestProject.Problems
 
                 i++;
                 j++;
-             
+
             }
         }
 
         public static void MaximumOfAllSubArrayOfSizeK(int[] numbers, int k)
         {
-            if(numbers.Length == 0)
+            if (numbers.Length == 0)
             {
                 return;
             }
@@ -381,19 +748,19 @@ namespace TestProject.Problems
             int i = 0, j = 0;
 
             List<int> maxNumbers = new List<int>();
-             
+
             //1 3 -1 -3 5 3 6 7
-            while(j<numbers.Length)
-            {               
-                if(j-i+1 < k)
+            while (j < numbers.Length)
+            {
+                if (j - i + 1 < k)
                 {
-                    if(maxNumbers.Count==0)
+                    if (maxNumbers.Count == 0)
                     {
                         maxNumbers.Add(numbers[j]);
-                    } 
-                    else 
+                    }
+                    else
                     {
-                        if(maxNumbers.Max()< numbers[j])
+                        if (maxNumbers.Max() < numbers[j])
                         {
                             maxNumbers.Add(numbers[j]);
                         }
@@ -410,7 +777,7 @@ namespace TestProject.Problems
                     maxNumbers.Add(numbers[j]);
                 }
 
-                if(numbers[i] == maxNumbers.Max())
+                if (numbers[i] == maxNumbers.Max())
                 {
                     Console.WriteLine(numbers[i]);
                     maxNumbers.Remove(maxNumbers.Max());
@@ -443,20 +810,20 @@ namespace TestProject.Problems
             return keyValuePairs.Where(x => x.Value > 1).Count() > 0;
         }
 
-        public static int LongestSubstringWithKUniqueCharacters(char [] characters, int k)
+        public static int LongestSubstringWithKUniqueCharacters(char[] characters, int k)
         {
             int result = 0;
             int i = 0, j = 0;
             Dictionary<char, int> keyValuePairs = new Dictionary<char, int>();
 
-            while(j< characters.Length)
+            while (j < characters.Length)
             {
                 AddCharacterToDictionary(keyValuePairs, characters[j]);
-                while(keyValuePairs.Count() < k)
+                while (keyValuePairs.Count() < k)
                 {
                     j++;
 
-                    if(j == characters.Length)
+                    if (j == characters.Length)
                     {
                         break;
                     }
@@ -469,14 +836,14 @@ namespace TestProject.Problems
                     result = Math.Max(result, j - i + 1);
                 }
 
-                while(keyValuePairs.Count() > k)
+                while (keyValuePairs.Count() > k)
                 {
                     if (keyValuePairs.ContainsKey(characters[i]))
                     {
                         keyValuePairs[characters[i]]--;
                     }
 
-                    if(keyValuePairs[characters[i]] == 0)
+                    if (keyValuePairs[characters[i]] == 0)
                     {
                         keyValuePairs.Remove(characters[i]);
                     }
@@ -513,7 +880,7 @@ namespace TestProject.Problems
                         return Math.Max(result, j - i + 1);
                     }
 
-                    if (characters[j] > 0) 
+                    if (characters[j] > 0)
                     {
                         j--;
                         break;
@@ -551,25 +918,25 @@ namespace TestProject.Problems
             return result;
 
         }
-       
+
         public static int LongestSubstringWithWithOutRepeatingCharacter2(string mystring)
         {
             int result = 0, i = 0, j = 0;
 
             Dictionary<char, int> map = new Dictionary<char, int>();
-            
-            if(string.IsNullOrEmpty(mystring))
+
+            if (string.IsNullOrEmpty(mystring))
             {
                 return 0;
             }
 
-            if(mystring.Length == 1)
+            if (mystring.Length == 1)
             {
                 return 1;
             }
 
             //PWWKEW
-            while (j< mystring.Length)
+            while (j < mystring.Length)
             {
                 AddCharacterToDictionary(map, mystring[j]);
 
@@ -580,14 +947,14 @@ namespace TestProject.Problems
                 //    AddCharacterToDictionary(map, mystring[j]);
                 //}
 
-                if(map.Count == j - i + 1)
+                if (map.Count == j - i + 1)
                 {
                     result = Math.Max(result, j - i + 1);
                 }
 
-                if(j-i+1> map.Count)
+                if (j - i + 1 > map.Count)
                 {
-                    while(j - i + 1 > map.Count)
+                    while (j - i + 1 > map.Count)
                     {
                         if (map.ContainsKey(mystring[i]))
                         {
@@ -610,15 +977,15 @@ namespace TestProject.Problems
 
         }
 
-        public static int CountOccuranceOfAnagram(string input, int k, Dictionary<char,int> patternmap,string sample)
+        public static int CountOccuranceOfAnagram(string input, int k, Dictionary<char, int> patternmap, string sample)
         {
-            int i=0, j=0,count=0, resultCount=0;
+            int i = 0, j = 0, count = 0, resultCount = 0;
             Dictionary<char, int> sourceMap = new Dictionary<char, int>();
-           
 
-            foreach(char ch in sample)
+
+            foreach (char ch in sample)
             {
-                if(patternmap.ContainsKey(ch))
+                if (patternmap.ContainsKey(ch))
                 {
                     patternmap[ch]++;
                 }
@@ -626,10 +993,10 @@ namespace TestProject.Problems
                 {
                     patternmap.Add(ch, 1);
                     count++;
-                }        
+                }
             }
 
-            while(j< input.Length)
+            while (j < input.Length)
             {
 
                 if (sourceMap.ContainsKey(input[j]))
@@ -642,7 +1009,7 @@ namespace TestProject.Problems
                 }
 
                 //aabaabaa //aaba
-                while ((j - i + 1)!=k)
+                while ((j - i + 1) != k)
                 {
                     j++;
 
@@ -660,10 +1027,10 @@ namespace TestProject.Problems
                 //aabaabaa //aaba
                 if ((j - i + 1) == k)
                 {
-                    if(CompareMaps(patternmap,sourceMap))
+                    if (CompareMaps(patternmap, sourceMap))
                     {
                         resultCount++;
-                    }            
+                    }
                 }
 
 
@@ -685,16 +1052,16 @@ namespace TestProject.Problems
             return resultCount;
         }
 
-        public static bool CompareMaps(Dictionary<char, int> patternMap, Dictionary<char,int> sourceMap)
+        public static bool CompareMaps(Dictionary<char, int> patternMap, Dictionary<char, int> sourceMap)
         {
-            if(patternMap.Count!= sourceMap.Count)
+            if (patternMap.Count != sourceMap.Count)
             {
                 return false;
             }
 
-            foreach(KeyValuePair<char,int> pair in patternMap)
+            foreach (KeyValuePair<char, int> pair in patternMap)
             {
-                if(patternMap[pair.Key]!= sourceMap[pair.Key])
+                if (patternMap[pair.Key] != sourceMap[pair.Key])
                 {
                     return false;
                 }
@@ -703,7 +1070,7 @@ namespace TestProject.Problems
             return true;
         }
 
-        public static bool InsertIntoMap(char ch, Dictionary<char,int> map)
+        public static bool InsertIntoMap(char ch, Dictionary<char, int> map)
         {
             if (map.ContainsKey(ch))
             {

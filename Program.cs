@@ -14,8 +14,7 @@ namespace DataStructure
 
         static void Main()
         {
-           int result =  Microsoft_Latetst_Questions.WaysToMakeFairIndex(new int[] {2, 1, 6, 4 });
-
+            var result =  SlidingWindow.MinimumWindowSubstring("a", "b");
         }
 
         public static List<List<int>> CountTripletsWithSumEqual(List<int> numbers)
