@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TestProject.Problems;
+using TestProject.Problems.Stack;
 
 namespace DataStructure
 {
@@ -14,7 +15,7 @@ namespace DataStructure
 
         static void Main()
         {
-            var result =  SlidingWindow.MinimumWindowSubstring("a", "b");
+            var result = LetterCombinationsofPhoneNumber.Test(new string[] { "practice", "makes", "perfect", "coding", "makes" }, "makes","coding");
         }
 
         public static List<List<int>> CountTripletsWithSumEqual(List<int> numbers)

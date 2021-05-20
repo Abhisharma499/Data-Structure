@@ -77,6 +77,7 @@
     <Compile Include="Problems\FindPairWithGivenSum.cs" />
     <Compile Include="Problems\FizzBuzz.cs" />
     <Compile Include="Problems\IComPararableVsComparerCode.cs" />
+    <Compile Include="Problems\LetterCombinationsofPhoneNumber.cs" />
     <Compile Include="Problems\LinkedList.cs" />
     <Compile Include="Problems\LongestCommonPrefix.cs" />
     <Compile Include="Problems\LRUCache.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Problems\ReverseInt.cs" />
     <Compile Include="Design Patterns\Singleton.cs" />
     <Compile Include="Problems\SlidingWindow.cs" />
+    <Compile Include="Problems\Stack\NextGreatestToRight.cs" />
     <Compile Include="Problems\SwapSort.cs" />
     <Compile Include="Problems\UnBoundedKnapsack.cs" />
     <Compile Include="Problems\RottingOranges.cs" />

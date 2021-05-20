@@ -12,6 +12,7 @@ namespace TestProject.Problems
     }
    public class Microsoft_Latetst_Questions
     {
+        static int[,] mem = new int[3, 3];
         public int GoodNodes(TreeNode root)
         {
             if (root == null)
@@ -77,6 +78,123 @@ namespace TestProject.Problems
             }
 
             return total + last;
+        }
+
+        public static string ReplaceAllstoAvoidConsecutiveRepeatingCharacters(string input)
+        {
+            //
+            List<char> result = input.ToList();
+
+
+            if (result.Count == 0)
+            {
+                return input;
+            }
+
+            if (result.Count == 1)
+            {
+                if (result[0] == '?')
+                {
+                    return 'a'.ToString();
+                }
+            }
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                if (result[i] != '?')
+                {
+                    continue;
+                }
+                else
+                {
+                    if (i == 0)
+                    {
+                        if (result[i + 1] != 'a')
+                        {
+                            result[i] = 'a';
+                        }
+                        else
+                        {
+                            result[i] = 'b';
+                        }
+                    }
+
+                    else if (i == result.Count - 1)
+                    {
+                        if (result[i - 1] != 'a')
+                        {
+                            result[i] = 'a';
+                        }
+                        else
+                        {
+                            result[i] = 'b';
+                        }
+                    }
+                    else
+                    {
+                        if (result[i - 1] != 'a' && result[i + 1] != 'a')
+                        {
+                            result[i] = 'a';
+                        }
+                        else if (result[i - 1] != 'b' && result[i + 1] != 'b')
+                        {
+                            result[i] = 'b';
+                        }
+                        else
+                        {
+                            result[i] = 'c';
+                        }
+                    }
+                }
+            }
+
+            return new string(result.ToArray());
+        }
+
+        public static List<string> LetterCombinationsofPhoneNumber(string digits)
+        {
+            Dictionary<char, List<string>> map = new Dictionary<char, List<string>>
+        {
+            {'2', new List<string> {"a","b","c"}},
+             {'3', new List<string> {"d","e","f"}},
+             {'4', new List<string> {"g","h","i"}},
+             {'5', new List<string> {"j","k","l"}},
+             {'6', new List<string> {"m","n","o"}},
+             {'7', new List<string> {"p","q","r","s"}},
+             {'8', new List<string> {"t","u","v"}},
+             {'9', new List<string> {"w","x","y","z"}}
+
+        };
+
+            List<string> result = new List<string>();
+
+            if (digits.Length == 0)
+            {
+                return result;
+            }
+
+            result = map[digits[0]];
+
+            for (int i = 1; i < digits.Length; i++)
+            {
+                var letters = map[digits[i]];
+
+                List<string> temp = new List<string>();
+
+                foreach (string str in result)
+                {
+                    foreach (string str1 in letters)
+                    {
+                        temp.Add(str + str1);
+                    }
+                }
+
+                result = temp;
+            }
+
+
+
+            return result;
         }
 
         public static int MaxNumberByAdding5(int number)
@@ -677,5 +795,34 @@ namespace TestProject.Problems
 
             return total;
         }
+
+        public static int CalculatePaths(int endx, int endy)
+        {
+           return GetUniquePaths(0, 0, 3, 3);
+        }
+
+        public static int GetUniquePaths(int startx, int starty, int endx, int endy)
+        {
+            if(startx> endx || starty > endy)
+            {
+                return 0;
+            }
+            
+            if(mem[startx,starty]!=0)
+            {
+                return mem[startx, starty];
+            }
+
+            if(startx == endx && starty == endy)
+            {
+                return 1;
+            }
+
+            int answer = GetUniquePaths(startx + 1, starty, endx, endy) + GetUniquePaths(startx, starty + 1, endx, endy);
+
+            return mem[startx, starty] = answer;
+        }
+
+
     }
 }
