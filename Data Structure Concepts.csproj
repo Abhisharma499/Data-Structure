@@ -119,6 +119,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Problems\Tuple.cs" />
     <Compile Include="Problems\TwoSumProblem.cs" />
+    <Compile Include="System Design\DeckOfCards.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -7,6 +7,17 @@ using System.Threading.Tasks;
 
 namespace TestProject.Problems
 {
+    class ClosestElement
+    {
+        int element;
+        int distance;
+
+       public ClosestElement(int element,int distance)
+        {
+            this.element = element;
+            this.distance = distance;
+        }
+    }
     class Coordinate
     {
         public int x, y;
@@ -29,6 +40,94 @@ namespace TestProject.Problems
     }
     public class ArrayAndStrings
     {
+
+        public static int CompressString(string[] input)
+        {
+            if (input.Length == 0 || input.Length == 1)
+            {
+                return input.Length;
+            }
+
+            string output = string.Empty;
+            int count = 1;
+            int i = 0;
+            string temp = string.Empty;
+            //"a","a","b","b","c","c","c"
+            for (i = 0; i < input.Length - 1; i++)
+            {
+                if (input[i] == input[i + 1])
+                {
+                    count++;
+                }
+                else
+                {
+                    if (count == 1)
+                    {
+                        temp = input[i].ToString();
+                        output += temp;
+                        temp = string.Empty;
+                        continue;
+                    }
+
+                    temp = input[i] + count.ToString();
+                    output += temp;
+                    count = 1;
+                    temp = string.Empty;
+                }
+            }
+
+            if (count > 1)
+            {
+                temp = input[i - 1] + count.ToString();
+                output += temp;
+            }
+
+            return output.Length;
+        }
+
+        //public static IList<int> FindKClosestElements(int[] numbers, int k, int x)
+        //{
+        //    List<int> output = new List<int>();
+
+        //    if (numbers.Length == 0)
+        //    {
+        //        return output;
+        //    }
+
+        //    if (numbers[0] > x)
+        //    {
+        //        for (int i = 0; i < k; i++)
+        //        {
+        //            output.Add(numbers[i]);
+        //        }
+
+        //        return output;
+        //    }
+        //    else if (numbers[numbers.Length - 1] < x)
+        //    {
+        //        int length = numbers.Length - 1;
+        //        for (int j = 0; j < k; j++)
+        //        {
+        //            output.Add(numbers[j]);
+        //            length--;
+        //        }
+
+        //        return output;
+        //    }
+        //    else
+        //    {
+        //        List<ClosestElement> elements = new List<ClosestElement>();
+
+        //        for(int i = 0; i < numbers.Length; i++)
+        //        {
+        //            ClosestElement el = new ClosestElement(numbers[i], Math.Abs(numbers[i] - x));
+        //            elements.Add(el);
+
+        //        }
+
+        //    }
+
+        //}
         public static IList<IList<int>> PascalTriangle(int rows)
         {
             IList<IList<int>> result = new List<IList<int>>();
@@ -625,11 +724,11 @@ namespace TestProject.Problems
             {
                 if (i > index && nums[i] == nums[i - 1])
                     continue;
-                    
+
                 if (temp.Sum() + nums[i] <= size)
                 {
                     temp.Add(nums[i]);
-                    NextPermutaion1(nums, i+1, temp, result, size);
+                    NextPermutaion1(nums, i + 1, temp, result, size);
                     temp.Remove(nums[i]);
                 }
             }
@@ -793,6 +892,61 @@ namespace TestProject.Problems
 
             return result.Count;
 
+        }
+
+        public static string ReverseWordsInAString(string input)
+        {
+            if (input.Length == 0)
+            {
+                return input;
+            }
+
+            List<string> mystring = input.Trim().Split(' ').ToList();
+
+            mystring = mystring.Where(x => x.Length > 0).Select(x => x).ToList();
+
+            string output = string.Empty;
+
+            for (int i = mystring.Count - 1; i >= 0; i--)
+            {
+                output += mystring[i].Trim() + " ";
+            }
+
+            return output.Substring(0, output.Length - 1);
+        }
+
+        public static string ReverseWordsWithoutExtraSpace(string input)
+        {
+            string output = string.Empty;
+            string temp = string.Empty;
+
+            //"the sky is blue"
+
+            input = input.Trim();
+
+            for (int i = input.Length - 1; i >= 0; i--)
+            {
+                if (input[i].ToString() == " ")
+                {
+                    if (temp.Length > 0)
+                    {
+                        output = output + " " + temp;
+                        temp = string.Empty;
+                    }
+                    continue;
+                }
+                else
+                {
+                    temp = input[i] + temp;
+                }
+            }
+
+            if (temp.Length > 0)
+            {
+                output = output + " " + temp;
+            }
+
+            return output.Substring(1);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using TestProject.Problems;
 using TestProject.Problems.Stack;
+using TestProject.System_Design;
 
 namespace DataStructure
 {
@@ -15,7 +16,9 @@ namespace DataStructure
 
         static void Main()
         {
-            var result = LetterCombinationsofPhoneNumber.Test(new string[] { "practice", "makes", "perfect", "coding", "makes" }, "makes","coding");
+            DeckOfCards deckObject = new DeckOfCards();
+            deckObject.FillDeckOfCards();
+            deckObject.ShuffleCards();
         }
 
         public static List<List<int>> CountTripletsWithSumEqual(List<int> numbers)
