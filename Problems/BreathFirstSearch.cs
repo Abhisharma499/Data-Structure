@@ -102,5 +102,95 @@ namespace TestProject.Problems
 
             return output;
         }
+
+        public static void JoinNextPointers(BNode root)
+        {
+            if(root == null)
+            {
+                return;
+            }
+
+            Queue<BNode> queue = new Queue<BNode>();
+
+            queue.Enqueue(root);
+            int size = 0;
+            BNode current = null;
+            BNode prev = null;
+
+            while (queue.Count>0)
+            {
+                size = queue.Count;
+
+                while(size>0)
+                {
+                    current = queue.Dequeue();
+
+                    if(prev == null)
+                    {
+                        prev = current;
+                    }
+                    else
+                    {
+                        prev.next = current;
+                    }
+
+                    if(current.left!= null)
+                    {
+                        queue.Enqueue(current.left);
+                    }
+
+                    if (current.right != null)
+                    {
+                        queue.Enqueue(current.right);
+                    }
+
+                    prev = current;
+                    size--;
+                }
+                prev = null;
+            }
+        }
+
+        public static BNode CopyRandomPointers(BNode root)
+        {
+            if(root ==null)
+            {
+                return root;
+            }
+
+            Dictionary<BNode, BNode> keyValuePairs = new Dictionary<BNode, BNode>();
+
+            BNode firstListRoot = root;
+            BNode tempNode = null;
+            BNode SecondHead = null;
+            BNode SecondTemp = null;
+
+            while(firstListRoot!= null)
+            {
+                tempNode = new BNode(firstListRoot.value);
+
+                if(SecondHead == null)
+                {
+                    SecondHead = tempNode;
+                    SecondTemp = tempNode;
+                }
+                else
+                {
+                    SecondTemp.next = tempNode;
+                    SecondTemp = tempNode;
+
+                }
+
+                keyValuePairs.Add(firstListRoot, tempNode);
+                firstListRoot = firstListRoot.next;
+            }
+
+            foreach(var pair in keyValuePairs)
+            {
+                pair.Value.next = keyValuePairs[pair.Key.next];
+            }
+
+            return SecondHead;
+        }
     }
 }

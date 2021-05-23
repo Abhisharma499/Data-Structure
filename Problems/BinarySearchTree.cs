@@ -9,11 +9,21 @@ namespace TestProject.Problems
         public int value = 0;
         public BNode left;
         public BNode right;
+        public BNode next;
         public BNode()
         {
             this.value = 0;
             this.left = null;
             this.right = null;
+            this.next = null;
+        }
+
+        public BNode(int val)
+        {
+            this.value = val;
+            this.left = null;
+            this.right = null;
+            this.next = null;
         }
     }
     public class BinarySearchTree

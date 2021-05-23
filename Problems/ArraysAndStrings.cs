@@ -12,7 +12,7 @@ namespace TestProject.Problems
         int element;
         int distance;
 
-       public ClosestElement(int element,int distance)
+        public ClosestElement(int element, int distance)
         {
             this.element = element;
             this.distance = distance;
@@ -41,6 +41,94 @@ namespace TestProject.Problems
     public class ArrayAndStrings
     {
 
+        //"aaabbbabbbb"
+        // [3,5,10,7,5,3,5,5,4,8,1]
+        public int MinCost(string s, int[] cost)
+        {
+            int minCost = 0;
+
+            for (int i = 1; i < s.Length; i++)
+            {
+                if (s[i] != s[i - 1])
+                {
+                    continue;
+                }
+                else
+                {
+                    if (cost[i - 1] < cost[i])
+                    {
+                        minCost = minCost + cost[i - 1];
+                    }
+                    else if (cost[i] < cost[i - 1])
+                    {
+                        minCost = minCost + cost[i];
+                        cost[i] = cost[i - 1];
+                    }
+                    else
+                    {
+                        minCost = minCost + cost[i];
+                    }
+                }
+            }
+            return minCost;
+        }
+
+        public int MinDeletions(string s)
+        {
+            if(string.IsNullOrEmpty(s) || s.Length==1)
+            {
+                return 0;
+            }
+
+            Dictionary<char, int> keyValuePairs = new Dictionary<char, int>();
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (keyValuePairs.ContainsKey(s[i]))
+                {
+                    keyValuePairs[s[i]]++;
+                }
+                else
+                {
+                    keyValuePairs.Add(s[i], 1);
+                }
+            }
+
+            keyValuePairs = keyValuePairs.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
+            List<int> ListofFrequency = keyValuePairs.Select(x => x.Value).ToList();
+
+            //"bbcebab"
+
+            //b 4
+            //c 1
+            //e 1
+            //a 1
+            int maxFrequency = ListofFrequency.Max();
+            int result = 0;
+
+            for(int i=0;i<ListofFrequency.Count;i++)
+            {
+                if(ListofFrequency[i]>maxFrequency)
+                {          
+                    result = result + ListofFrequency[i] - maxFrequency;
+                }
+
+                if(maxFrequency == 0)
+                {
+                    continue;
+                }
+
+                maxFrequency = Math.Min(maxFrequency - 1, ListofFrequency[i] - 1);
+            }
+
+            return result;
+
+            
+
+
+
+        }
         public static int CompressString(string[] input)
         {
             if (input.Length == 0 || input.Length == 1)
