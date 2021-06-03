@@ -24,6 +24,209 @@ namespace TestProject.Problems
 
             return 0;
         }
+
+
+        public static int partitionDisjoint(int[] A)
+        {
+            int number = A.Length;
+            int[] maxLeft = new int[number];
+            int[] minRight = new int[number];
+            int max = A[0];
+            int min = A[number - 1];
+
+            for (int i=0;i<number;i++)
+            {
+                max = Math.Max(max, A[i]);
+                maxLeft[i] = max;
+            }
+
+            for (int i = number-1; i>=0; i--)
+            {
+                min = Math.Min(max, A[i]);
+                minRight[i] = min;
+            }
+
+
+            for(int i=1;i<number;i++)
+            {
+                if(maxLeft[i-1]<=minRight[i])
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+
+        }
+
+        public static IList<IList<string>> GroupAnagrams(string[] strs)
+        {
+            Dictionary<string, IList<string>> keyValuePairs = new Dictionary<string, IList<string>>();
+            List<IList<string>> result = new List<IList<string>>();
+
+
+            //
+            //["eat","tea","tan","ate","nat","bat"]
+            foreach (string str in strs)
+            {
+                var sortedStr = string.Concat(str.OrderBy(c => c));
+                if (!keyValuePairs.ContainsKey(sortedStr))
+                {
+                    keyValuePairs.Add(sortedStr, new List<string>() { str });
+                }
+                else
+                {
+                    keyValuePairs[sortedStr].Add(str);
+                }
+            }
+
+            foreach(var pair in keyValuePairs)
+            {
+                result.Add(pair.Value);
+            }
+
+            return result;
+        }
+
+
+        public static string ConvertToTitle(int columnNumber)
+        {
+
+            string result = "";
+
+            while (columnNumber > 0)
+            {
+                columnNumber--;
+
+                int n = 'A' + columnNumber % 26;
+                char c = (char)n;
+                result = c.ToString() + result;
+                columnNumber = columnNumber / 26;
+
+            }
+
+            return result;
+        }
+
+        public static void Combination(List<List<int>> result, List<int> curr, int index, int[] nums, int k)
+        {
+            if (curr.Count() == k)
+            {
+                List<int> temp = new List<int>();
+                temp.AddRange(curr);
+                result.Add(temp);
+                return;
+            }
+
+            for (int i = index; i < nums.Length; i++)
+            {
+                curr.Add(nums[i]);
+                Combination(result, curr, i + 1, nums, k);
+                curr.RemoveAt(curr.Count() - 1);
+            }
+        }
+
+        public static void CombinationSum(List<IList<int>> result, List<int> curr, int index, int[] nums, int target)
+        {
+            if (curr.Sum() == target)
+            {
+                List<int> temp = new List<int>();
+                temp.AddRange(curr);
+                result.Add(temp);
+                return;
+            }
+
+            for (int i = index; i < nums.Length; i++)
+            {
+                if (curr.Sum() < target)
+                {
+                    curr.Add(nums[i]);
+                    CombinationSum(result, curr, i, nums, target);
+                    curr.RemoveAt(curr.Count() - 1);
+                }
+            }
+        }
+
+        public static void CombinationSum3(List<IList<int>> result, List<int> curr, int index, int[] nums, int k, int target)
+        {
+            if (curr.Sum() == target && curr.Count() == k)
+            {
+                List<int> temp = new List<int>();
+                temp.AddRange(curr);
+                result.Add(temp);
+                return;
+            }
+
+            for (int i = index; i < nums.Length; i++)
+            {
+                if (curr.Sum() < target)
+                {
+                    curr.Add(nums[i]);
+                    CombinationSum3(result, curr, i + 1, nums, k, target);
+                    curr.RemoveAt(curr.Count() - 1);
+                }
+            }
+        }
+
+        public static void CombinationSum4(List<IList<int>> result, List<int> curr, int[] nums, int target)
+        {
+            if (curr.Sum() == target)
+            {
+                List<int> temp = new List<int>();
+                temp.AddRange(curr);
+                result.Add(temp);
+                return;
+            }
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (curr.Sum() < target)
+                {
+                    curr.Add(nums[i]);
+                    CombinationSum4(result, curr, nums, target);
+                    curr.RemoveAt(curr.Count() - 1);
+                }
+            }
+        }
+
+        public static void Permutation(List<IList<int>> result, List<int> curr, int[] nums)
+        {
+            if (curr.Count() == nums.Length)
+            {
+                List<int> temp = new List<int>();
+                temp.AddRange(curr);
+                result.Add(temp);
+                return;
+            }
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (!curr.Contains(nums[i]))
+                {
+                    curr.Add(nums[i]);
+                    Permutation(result, curr, nums);
+                    curr.RemoveAt(curr.Count() - 1);
+                }
+            }
+        }
+
+        public static void SubSets(List<List<int>> result, List<int> curr, int index, int[] nums)
+        {
+            List<int> temp = new List<int>();
+            temp.AddRange(curr);
+
+            result.Add(temp);
+
+            for (int i = index; i < nums.Length; i++)
+            {
+                curr.Add(nums[i]);
+
+                SubSets(result, curr, i + 1, nums);
+
+                curr.RemoveAt(curr.Count() - 1);
+            }
+
+        }
         public static string CompressString(string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -575,10 +778,13 @@ namespace TestProject.Problems
         public static void Combination(int index, List<int> result, List<IList<int>> subsets, int k, int n)
         {
             List<int> temp = new List<int>();
+
             temp.AddRange(result);
+
             if (temp.Count() == k)
             {
                 subsets.Add(temp);
+
                 return;
             }
             for (int i = index; i <= n; i++)
@@ -1129,6 +1335,7 @@ namespace TestProject.Problems
 
         public static int LCS(string str1, string str2, int n, int m)
         {
+
             if (n < 1 || m < 1)
             {
                 return 0;
@@ -1136,6 +1343,7 @@ namespace TestProject.Problems
 
             if (str1[n - 1] == str2[m - 1])
             {
+
                 return 1 + LCS(str1, str2, n - 1, m - 1);
             }
             else

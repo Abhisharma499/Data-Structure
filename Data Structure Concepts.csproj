@@ -58,6 +58,7 @@
     <Compile Include="Problems\BinaryTree.cs" />
     <Compile Include="Problems\BitManipulation.cs" />
     <Compile Include="Problems\CustomException.cs" />
+    <Compile Include="Problems\DictionaryTypes\LearnCollections.cs" />
     <Compile Include="Problems\DynamicProgramming.cs" />
     <Compile Include="Problems\DynamicProgrammingString.cs" />
     <Compile Include="Problems\Graph.cs" />

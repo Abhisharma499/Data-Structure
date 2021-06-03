@@ -8,9 +8,355 @@ namespace TestProject.Problems
 {
     class SlidingWindow
     {
+
+
+        //Input: s = "ADOBECODEBANC", t = "ABC"
+
+        public static string MinWindow(string s, string t)
+        {
+            int minLength = int.MaxValue;
+            string result = string.Empty;
+            Dictionary<char, int> map = new Dictionary<char, int>();
+            Dictionary<char, int> helper = new Dictionary<char, int>();
+
+            
+            if(s.Length< t.Length)
+            {
+                return string.Empty;
+            }
+
+            int startIndex=-1, endIndex=-1, i=0, j=0;
+
+            foreach(var ch in t)
+            {
+                if(map.ContainsKey(ch))
+                {
+                    map[ch]++;
+                }
+                else
+                {
+                    map.Add(ch, 1);
+                }
+            }
+
+            while(j<s.Length)
+            {
+                if(helper.ContainsKey(s[j]))
+                {
+                    helper[s[j]]++;
+                }
+                else
+                {
+                    helper.Add(s[j], 1);
+                }
+
+                while(!CompareDictionary(helper, map))
+                {
+                    j++;
+
+                    if(j==s.Length)
+                    {
+                        break;
+                    }
+
+                    if (helper.ContainsKey(s[j]))
+                    {
+                        helper[s[j]]++;
+                    }
+                    else
+                    {
+                        helper.Add(s[j], 1);
+                    }
+                }
+
+                if(CompareDictionary(helper, map))
+                {
+                    if (j - i + 1 < minLength)
+                    {
+                        minLength = Math.Min(minLength, j - i + 1);
+                        startIndex = i;
+                        endIndex = j;
+                    }
+                }
+
+                //Input: s = "ADOBECODEBANC", t = "ABC"
+                while (CompareDictionary(helper, map))
+                {
+                    if (CompareDictionary(helper, map))
+                    {
+                        if (j - i + 1 < minLength)
+                        {
+                            minLength = Math.Min(minLength, j - i + 1);
+                            startIndex = i;
+                            endIndex = j;
+                        }
+                    }
+
+                    if (helper.ContainsKey(s[i]))
+                    {
+                        if (helper[s[i]] > 0)
+                        {
+                            helper[s[i]]--;
+                        }
+                        if (helper[s[i]] == 0)
+                        {
+                            helper.Remove(s[i]);
+                        }          
+                    }
+
+                    i++;
+                }
+
+                j++;
+            }
+
+            if(startIndex == -1 || endIndex == -1)
+            {
+                return string.Empty;
+            }
+
+            return s.Substring(startIndex, endIndex-startIndex+1);
+        }
+
+        public static string MinWindowEfficient(string s, string t)
+        {
+            int minLength = int.MaxValue;
+            string result = string.Empty;
+            Dictionary<char, int> map = new Dictionary<char, int>();
+            int count = 0;
+            int startIndex = -1, endIndex = -1, i = 0, j = 0;
+            if (s.Length < t.Length)
+            {
+                return string.Empty;
+            }
+
+            foreach (var ch in t)
+            {
+                if (map.ContainsKey(ch))
+                {
+                    map[ch]++;
+                }
+                else
+                {
+                    map.Add(ch, 1);
+                }
+            }
+
+       // Input: s = "ADOBECODEBANC", t = "ABC"
+            while (j<s.Length)
+            {
+                if(map.ContainsKey(s[j]))
+                {
+                    if(map[s[j]]>0)
+                    {                  
+                        count++;
+                    }
+
+                    map[s[j]]--;
+                }
+
+                //Input: s = "ADOBECODEBANC", t = "ABC"
+                while (count!=t.Length)
+                {
+                    j++;
+
+                    if(j== s.Length)
+                    {
+                        break;
+                    }
+                    if (map.ContainsKey(s[j]))
+                    {
+                        if (map[s[j]] > 0)
+                        {
+                            count++;
+                        }
+
+                        map[s[j]]--;
+                    }
+                }
+
+                //Input: s = "ADOBECODEBANC", t = "ABC"
+                if (t.Length== count)
+                {
+                    if(j-i+1< minLength)
+                    {
+                        minLength = Math.Min(minLength, j - i + 1);
+                        startIndex = i;
+                        endIndex = j;
+                    }
+                }
+
+                //Input: s = "ADOBECODEBANC", t = "ABC"
+                while (count==t.Length)
+                {
+                    if (t.Length == count)
+                    {
+                        if (j - i + 1 < minLength)
+                        {
+                            minLength = Math.Min(minLength, j - i + 1);
+                            startIndex = i;
+                            endIndex = j;
+                        }
+                    }
+
+                    if (map.ContainsKey(s[i]))
+                    {
+                        if (map[s[i]] >= 0)
+                        {
+                            count--;
+                        }
+
+                        map[s[i]]++;
+
+                    }
+
+                    
+
+                    i++;
+                }
+
+                j++;
+            }
+
+            if(startIndex==-1 || endIndex== -1)
+            {
+                return string.Empty;
+            }
+
+            return s.Substring(startIndex, endIndex - startIndex + 1);
+
+        }
+
+
+        public static bool CompareDictionary(Dictionary<char, int> created, Dictionary<char, int> original)
+        {
+            if(created.Count()< original.Count)
+            {
+                return false;
+            }
+            foreach(var pair in original)
+            {
+                if(!created.ContainsKey(pair.Key))
+                {
+                    return false;
+                }
+                else
+                {
+                    if(created[pair.Key]<pair.Value)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+        public static int LargestSubarraywith0sum(int[] nums, int k)
+        {
+            /*Input: arr [] = { 15, -2, 2, -8, 1, 7, 10, 23};
+            Output: 5
+Explanation: The longest sub-array with
+elements summing up-to 0 is { -2, 2, -8, 1, 7}
+            */
+            int sum = 0;
+            int result = 0;
+
+            Dictionary<int, int> keyValuePairs = new Dictionary<int, int>();
+            keyValuePairs.Add(0, -1);
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                sum = sum + nums[i];
+
+                if (keyValuePairs.ContainsKey(sum - k))
+                {
+                    result = Math.Max(result, i - keyValuePairs[sum - k]);
+                    if (!keyValuePairs.ContainsKey(sum))
+                    {
+                        keyValuePairs.Add(sum, i);
+                    }
+                }
+                else
+                {
+                    if(!keyValuePairs.ContainsKey(sum))
+                    {
+                        keyValuePairs.Add(sum, i);
+                    }
+                }
+            }
+
+            return result;
+
+
+        }
+        public static int subarraySum2(int[] nums, int k)
+        {
+            //Input: nums = [1,1,1], k = 2
+            // Output: 2
+            int count = 0;
+            for (int start = 0; start < nums.Length; start++)
+            {
+                int sum = 0;
+
+                for (int end = start; end < nums.Length; end++)
+                {
+                    sum += nums[end];
+                    if (sum == k)
+                        count++;
+                }
+            }
+            return count;
+        }
+        public static int subarraySum(int[] nums, int k)
+        {
+            //Input: nums = [1,1,1], k = 2
+            //Output: 2
+            int count = 0;
+            int sum = 0;
+
+            Dictionary<int, int> cumulativeSumDictionary = new Dictionary<int, int>();
+            cumulativeSumDictionary.Add(0, 1);
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                sum = sum + nums[i];
+
+                if (cumulativeSumDictionary.ContainsKey(sum - k))
+                {
+                    count = count + cumulativeSumDictionary[sum - k];
+
+                    if (cumulativeSumDictionary.ContainsKey(sum))
+                    {
+                        cumulativeSumDictionary[sum]++;
+                    }
+                    else
+                    {
+                        cumulativeSumDictionary.Add(sum, 1);
+                    }
+                }
+                else
+                {
+                    if (cumulativeSumDictionary.ContainsKey(sum))
+                    {
+                        cumulativeSumDictionary[sum]++;
+                    }
+                    else
+                    {
+                        cumulativeSumDictionary.Add(sum, 1);
+                    }
+                }
+            }
+
+
+
+
+            return count;
+
+
+        }
         public static string MinimumWindowSubstring(string large, string small)
         {
-            if(small.Length > large.Length)
+            if (small.Length > large.Length)
             {
                 return string.Empty;
             }
@@ -18,15 +364,15 @@ namespace TestProject.Problems
             //toc
 
             //tim
-            int i=0, j = 0;
+            int i = 0, j = 0;
             int result = int.MaxValue;
-            Dictionary<char,int> smallDictionary = new Dictionary<char,int>();
+            Dictionary<char, int> smallDictionary = new Dictionary<char, int>();
             Dictionary<char, int> largeDictionary = new Dictionary<char, int>();
-            int start=0, end=0;
+            int start = 0, end = 0;
 
             foreach (char ch in small)
             {
-                if(smallDictionary.ContainsKey(ch))
+                if (smallDictionary.ContainsKey(ch))
                 {
                     smallDictionary[ch]++;
                 }
@@ -36,7 +382,7 @@ namespace TestProject.Problems
                 }
             }
 
-            while(j<large.Length)
+            while (j < large.Length)
             {
                 ///time to practice
                   //toc
@@ -49,9 +395,9 @@ namespace TestProject.Problems
                     largeDictionary.Add(large[j], 1);
                 }
 
-                while(!CheckOneDictionaryParentOfOther(largeDictionary,smallDictionary))
+                while (!CheckOneDictionaryParentOfOther(largeDictionary, smallDictionary))
                 {
-                    if (j < large.Length-1)
+                    if (j < large.Length - 1)
                     {
                         j++;
                     }
@@ -70,7 +416,7 @@ namespace TestProject.Problems
                     }
                 }
 
-                if(CheckOneDictionaryParentOfOther(largeDictionary, smallDictionary))
+                if (CheckOneDictionaryParentOfOther(largeDictionary, smallDictionary))
                 {
                     result = Math.Min(result, j - i + 1);
                     start = i; end = j;
@@ -80,12 +426,12 @@ namespace TestProject.Problems
                 //toc
                 while (CheckOneDictionaryParentOfOther(largeDictionary, smallDictionary))
                 {
-                    if(largeDictionary.ContainsKey(large[i]))
+                    if (largeDictionary.ContainsKey(large[i]))
                     {
                         largeDictionary[large[i]]--;
                     }
-                    
-                    if(largeDictionary[large[i]]==0)
+
+                    if (largeDictionary[large[i]] == 0)
                     {
                         largeDictionary.Remove(large[i]);
                     }
@@ -93,28 +439,28 @@ namespace TestProject.Problems
                     i++;
                 }
 
-                if(result > j - i + 2)
+                if (result > j - i + 2)
                 {
                     result = j - i + 2;
-                    start = i==0?i:i-1;
+                    start = i == 0 ? i : i - 1;
                     end = j;
                 }
 
                 j++;
             }
 
-            if(result == int.MaxValue)
+            if (result == int.MaxValue)
             {
                 return string.Empty;
             }
-            return large.Substring(start,end-start+1);
+            return large.Substring(start, end - start + 1);
         }
 
-        public static bool CheckOneDictionaryParentOfOther(Dictionary<char,int> large, Dictionary<char, int> small)
+        public static bool CheckOneDictionaryParentOfOther(Dictionary<char, int> large, Dictionary<char, int> small)
         {
-            foreach(var keyValuePair in small)
+            foreach (var keyValuePair in small)
             {
-                if(!large.ContainsKey(keyValuePair.Key))
+                if (!large.ContainsKey(keyValuePair.Key))
                 {
                     return false;
                 }
@@ -125,7 +471,7 @@ namespace TestProject.Problems
 
         public static bool CompareHashset(HashSet<char> a, HashSet<char> b)
         {
-            if(a== null && b== null)
+            if (a == null && b == null)
             {
                 return true;
             }
@@ -139,9 +485,9 @@ namespace TestProject.Problems
                 return false;
             }
 
-            foreach(char ch in a)
+            foreach (char ch in a)
             {
-                if(!b.Contains(ch))
+                if (!b.Contains(ch))
                 {
                     return false;
                 }
@@ -155,17 +501,17 @@ namespace TestProject.Problems
             int i = 0, j = 0;
             HashSet<char> hashset = new HashSet<char>();
 
-            while(j<input.Length)
+            while (j < input.Length)
             {
                 hashset.Add(input[j]);
 
-                while(hashset.Count< k)
+                while (hashset.Count < k)
                 {
                     j++;
                     hashset.Add(input[j]);
                 }
 
-                if(hashset.Count == k)
+                if (hashset.Count == k)
                 {
                     result = Math.Max(result, j - i + 1);
                 }
@@ -183,12 +529,12 @@ namespace TestProject.Problems
             int result = 0;
             int i = 0, j = 0;
             //abcabcbb
-            Dictionary<char,int> keyValuePairs = new Dictionary<char,int>();
+            Dictionary<char, int> keyValuePairs = new Dictionary<char, int>();
 
             //"pwwkew"  //abcabcbb
             while (j < input.Length)
             {
-                if(!keyValuePairs.ContainsKey(input[j]))
+                if (!keyValuePairs.ContainsKey(input[j]))
                 {
                     keyValuePairs.Add(input[j], 1);
                 }
@@ -222,23 +568,23 @@ namespace TestProject.Problems
 
             return result;
         }
-        public static int LongestSubArrayOfSumK(int[] numbers , int sum)
+        public static int LongestSubArrayOfSumK(int[] numbers, int sum)
         {
             int i = 0, j = 0;
             int result = 0;
             int csum = 0;
 
-            while(j<numbers.Length)
+            while (j < numbers.Length)
             {
                 csum = csum + numbers[j];
 
-                while(csum < sum)
+                while (csum < sum)
                 {
                     j++;
                     csum = csum + numbers[j];
                 }
 
-                if(csum == sum)
+                if (csum == sum)
                 {
                     result = Math.Max(j - i + 1, result);
                 }

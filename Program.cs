@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TestProject.Problems;
+using TestProject.Problems.DictionaryTypes;
 using TestProject.Problems.Stack;
 using TestProject.System_Design;
 
@@ -16,10 +17,49 @@ namespace DataStructure
 
         static void Main()
         {
-            DeckOfCards deckObject = new DeckOfCards();
-            deckObject.FillDeckOfCards();
-            deckObject.ShuffleCards();
+            int[][] mat = new int[3][];
+            mat[0] = new int[5];
+            mat[1] = new int[5];
+            mat[2] = new int[5];
+
+            int rows = mat.GetUpperBound(0) + 1;
+            int cols = mat[0].Length;
+            string a = string.Empty;
+
+            ArrayAndStrings.LongestIncreasingSubSequence(new int[] {3,4,-1,0,6,2,3 });
+
+
+
         }
+
+        public static void SieveOfErosethesus(int number)
+        {
+            bool[] primes = new bool[number + 1];
+
+            for(int i=2;i<primes.Length;i++)
+            {
+                primes[i] = true;
+            }
+
+            for(int i=2;i<primes.Length;i++)
+            {
+                if(!primes[i])
+                {
+                    continue;
+                }
+                else
+                {
+                    for(int j=i*i;j<=number;j=j+i)
+                    {
+                        primes[j] = false;
+                    }
+                }
+            }
+
+
+        }
+
+
 
         public static List<List<int>> CountTripletsWithSumEqual(List<int> numbers)
         {

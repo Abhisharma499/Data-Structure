@@ -40,7 +40,174 @@ namespace TestProject.Problems
     }
     public class ArrayAndStrings
     {
+        public static void PrintAllSubsequences(string input, string output)
+        {
+            if (input.Length == 0)
+            {
+                Console.WriteLine(output);
+                return;
+            }
 
+            string op1 = output + input[0];
+            string op2 = output + input[0].ToString().ToUpper();
+
+            input = input.Substring(1);
+
+            PrintAllSubsequences(input, op1);
+            PrintAllSubsequences(input, op2);
+        }
+        public static List<string> CountAndSay1(int n)
+        {
+            List<string> result = new List<string>();
+            result.Add("1");
+            string tempResult = string.Empty;
+
+            //1
+            //1 1
+            //2 1
+            //1 2 1 1
+            //1 1 1 2 2 1
+            int index = 0;
+            int count = 1;
+
+            for (int i = 2; i <= n; i++)
+            {
+                for (int j = 0; j < result[index].Length; j++)
+                {
+                    if (j + 1 < result[i - 2].Length && result[i - 2][j] == result[i - 2][j + 1])
+                    {
+                        count++;
+                        continue;
+                    }
+                }
+
+                result.Add(count + result[i - 2].ToString());
+            }
+
+            return result;
+
+        }
+        public static string CountAndSay(int n)
+        {
+            string result = "1";
+            string tempResult = string.Empty;
+            int count = 1;
+            string finalResult1 = result + Environment.NewLine;
+            int j;
+
+            for (int i = 2; i <= n; i++)
+            {
+                for (j = 0; j < result.Length; j++)
+                {
+                    if (j + 1 < result.Length && result[j] == result[j + 1])
+                    {
+                        count++;
+                        continue;
+                    }
+
+                    tempResult += count.ToString() + result[j].ToString();
+                    count = 1;
+                }
+
+                result = tempResult;
+                finalResult1 += result + Environment.NewLine;
+                tempResult = string.Empty;
+            }
+
+            return finalResult1;
+        }
+        public static int StrStr1(string haystack, string needle)
+        {
+            if (string.IsNullOrEmpty(needle))
+            {
+                return 0;
+            }
+
+            //Hello
+            //ll
+
+            int hayStackLength = haystack.Length;
+            int needleLength = needle.Length;
+            int startIndex = -1;
+
+            for (int i = 0; i <= (hayStackLength - needleLength); i++)
+            {
+                int count = 0;
+                int j = 0;
+                for (j = 0; j < needleLength; j++)
+                {
+                    if (haystack[j + i] == needle[j])
+                    {
+                        if (startIndex == -1)
+                        {
+                            startIndex = i;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (j == needleLength)
+                {
+                    return startIndex;
+                }
+
+                startIndex = -1;
+            }
+
+            return -1;
+        }
+        public static bool ValidParentheses(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return true;
+            }
+
+            if (s.Length == 1)
+            {
+                return false;
+            }
+
+            Stack<string> stack = new Stack<string>();
+            List<string> opening = new List<string>() { "(", "{", "[" };
+            List<string> closing = new List<string>() { ")", "}", "]" };
+
+
+            foreach (char ch in s)
+            {
+                if (opening.Contains(ch.ToString()))
+                {
+                    stack.Push(ch.ToString());
+                }
+                else
+                {
+                    int index = closing.IndexOf(ch.ToString());
+
+                    if (stack.Count == 0)
+                    {
+                        return false;
+                    }
+
+                    if (stack.Peek() != opening[index])
+                    {
+                        return false;
+                    }
+
+                    stack.Pop();
+                }
+            }
+
+            if (stack.Count > 0)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
         //"aaabbbabbbb"
         // [3,5,10,7,5,3,5,5,4,8,1]
         public int MinCost(string s, int[] cost)
@@ -73,9 +240,34 @@ namespace TestProject.Problems
             return minCost;
         }
 
+        public static int MaximalNetworkRank(int n, int[][] roads)
+        {
+            int[] numberOfConnections = new int[n];
+            int[,] connections = new int[n, n];
+            int rank = 0;
+
+            foreach (var road in roads)
+            {
+                numberOfConnections[road[0]]++;
+                numberOfConnections[road[1]]++;
+                connections[road[0], road[1]] = 1;
+                connections[road[1], road[0]] = 1;
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = i + 1; j < n; j++)
+                {
+                    rank = Math.Max(rank, numberOfConnections[i] + numberOfConnections[j] - connections[i, j]);
+                }
+            }
+
+            return rank;
+        }
+
         public int MinDeletions(string s)
         {
-            if(string.IsNullOrEmpty(s) || s.Length==1)
+            if (string.IsNullOrEmpty(s) || s.Length == 1)
             {
                 return 0;
             }
@@ -107,14 +299,14 @@ namespace TestProject.Problems
             int maxFrequency = ListofFrequency.Max();
             int result = 0;
 
-            for(int i=0;i<ListofFrequency.Count;i++)
+            for (int i = 0; i < ListofFrequency.Count; i++)
             {
-                if(ListofFrequency[i]>maxFrequency)
-                {          
+                if (ListofFrequency[i] > maxFrequency)
+                {
                     result = result + ListofFrequency[i] - maxFrequency;
                 }
 
-                if(maxFrequency == 0)
+                if (maxFrequency == 0)
                 {
                     continue;
                 }
@@ -124,7 +316,7 @@ namespace TestProject.Problems
 
             return result;
 
-            
+
 
 
 
@@ -693,6 +885,30 @@ namespace TestProject.Problems
 
         }
 
+        public static void LongestIncreasingSubSequence(int[] nums)
+        {
+            int i = 0, j = 0;
+            int[] result = new int[nums.Length];
+            int overallMax = 0;
+
+            for(i=0;i<result.Length;i++)
+            {
+                result[i] = 1;
+            }
+
+            for(i=1;i<nums.Length;i++)
+            {
+                for(j=0;j<i;j++)
+                {
+                    if(nums[j]<nums[i])
+                    {
+                        result[i] = Math.Max(result[i], result[j] + 1);
+                        overallMax=  Math.Max(overallMax, result[i]);
+                    }
+                }
+            }
+        }
+
         public static string IntegerToRoman(int number)
         {
             string[] units = { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
@@ -703,6 +919,153 @@ namespace TestProject.Problems
             //3124
             return thousand[number / 1000] + hundred[(number % 1000) / 100] + tens[(number % 100) / 10] + units[(number % 10)];
 
+        }
+
+        public static int KthSmallestInArray(int[] nums, int k)
+        {
+            if(nums.Length<k)
+            {
+                return -1;
+            }
+
+            List<int> maxHeap = new List<int>();
+
+            for(int i=0;i<nums.Length;i++)
+            {
+               if(maxHeap.Count < k)
+                {
+                    maxHeap.Add(nums[i]);
+                }
+                else
+                {
+                    if(maxHeap.Max()>nums[i])
+                    {
+                        maxHeap.Add(nums[i]);
+                        if (maxHeap.Count > 0)
+                        maxHeap.Remove(maxHeap.Max());
+                    }   
+                }
+            }
+
+            return maxHeap.Max();
+        }
+
+        public static bool CheckPerfectNumber(int num)
+        {
+            List<int> divisors = new List<int>();
+
+            for (int i = 2; i <= Math.Sqrt(num); i++)
+            {
+                if (num % i == 0)
+                {
+                    divisors.Add(i);
+                }
+            }
+
+            int sum = 0;
+
+            foreach (int item in divisors)
+            {
+                sum = sum + item + num / item;
+            }
+
+            return sum + 1 == num;
+
+
+        }
+
+
+        public static bool CanJump(int[] nums)
+        {
+            //3, 2, 1, 0, 4
+            int reach = 0;
+
+            for (int i = 0; i <= reach; i++)
+            {
+                reach = Math.Max(reach, i + nums[i]);
+
+                if (reach >= nums.Length - 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
+
+        public static string Convert(string s, int numRows)
+        {
+            string result = string.Empty;
+
+            if (numRows == 1)
+            {
+                return s;
+            }
+
+            Dictionary<int, string> keyValuePairs = new Dictionary<int, string>();
+            int pos = 0;
+            bool isDown = true;
+
+            foreach (char ch in s)
+            {
+                //PAYPALISHIRING
+                if (keyValuePairs.ContainsKey(pos))
+                {
+                    keyValuePairs[pos] += ch.ToString();
+                }
+                else
+                {
+                    keyValuePairs[pos] = string.Empty;
+                    keyValuePairs[pos] += ch.ToString();
+
+                }
+                if (pos == numRows - 1 && isDown)
+                {
+                    isDown = false;
+                }
+                else if (pos == 0 && !isDown)
+                {
+                    isDown = true;
+                }
+
+                if (isDown)
+                {
+                    pos++;
+                }
+                else
+                {
+                    pos--;
+                }
+
+            }
+
+            foreach (var pair in keyValuePairs)
+            {
+                result += pair.Value;
+            }
+
+            return result;
+        }
+
+        public static string LongestCommonPrefix(string[] strs)
+        {
+            if (strs.Length == 0)
+            {
+                return "";
+            }
+
+            string result = strs[0];
+
+            for (int i = 1; i < strs.Length; i++)
+            {
+                while (!strs[i].StartsWith(result))
+                {
+                    result = result.Substring(0, result.Length - 1);
+                }
+            }
+
+            return result;
         }
 
         public static int RomanToInteger(string romanNumber)
@@ -1035,6 +1398,203 @@ namespace TestProject.Problems
             }
 
             return output.Substring(1);
+        }
+
+
+        //"1+2"
+        public static int BasicCalculator(string equation)
+        {
+            if (string.IsNullOrEmpty(equation))
+            {
+                return 0;
+            }
+
+            Stack<char> stack = new Stack<char>();
+
+            foreach (char ch in equation)
+            {
+                //"(1+(4+5+2)-3)+(6+8)"
+
+                if (ch == ' ')
+                {
+                    continue;
+                }
+                else if (ch != ')')
+                {
+                    stack.Push(ch);
+                }
+                else
+                {
+                    string temp1 = string.Empty;
+                    while (stack.Count > 0 && stack.Peek() != '(')
+                    {
+                        temp1 = stack.Pop().ToString() + temp1;
+                    }
+
+                    stack.Pop();
+
+                    int result = Calculator(temp1);
+                    temp1 = string.Empty;
+
+                    if (stack.Count > 0 && stack.Peek() == '-' && result < 0)
+                    {
+                        stack.Pop();
+                        stack.Push('+');
+                        result = result * -1;
+                    }
+                    //"(1+(4+5+3)-3)+(6+8)"
+                    //12
+                    foreach (char ch1 in result.ToString())
+                    {
+                        stack.Push(ch1);
+                    }
+                }
+            }
+
+            string temp = string.Empty;
+
+            //123
+
+            while (stack.Count > 0)
+            {
+                temp = stack.Pop() + temp;
+            }
+
+            return Calculator(temp);
+        }
+
+        public static int Calculator(string equation)
+        {
+            if (string.IsNullOrEmpty(equation))
+            {
+                return 0;
+            }
+
+            equation = equation.Trim();
+
+            int total = 0, last = 0, pow = 0;
+
+            for (int i = equation.Length - 1; i >= 0; i--)
+            {
+                if (equation[i] == ' ')
+                {
+                    continue;
+                }
+                else if (equation[i] == '+')
+                {
+                    total += last;
+                    pow = 0;
+                    last = 0;
+                }
+                else if (equation[i] == '-')
+                {
+                    total -= last;
+                    pow = 0;
+                    last = 0;
+                }
+                else
+                {
+                    last = last + (equation[i] - '0') * (int)Math.Pow(10, pow);
+                    pow++;
+                }
+            }
+
+            total = total + last;
+
+            return total;
+        }
+
+        //1-4+3*2+1/5
+        public static int Calculate(string input)
+        {
+
+            if (string.IsNullOrEmpty(input))
+            {
+                return 0;
+            }
+
+            int result = 0;
+            Dictionary<char, int> precedence = new Dictionary<char, int>();
+            precedence.Add('+', 0);
+            precedence.Add('-', 0);
+            precedence.Add('*', 1);
+            precedence.Add('/', 1);
+
+            Stack<int> stackNumbers = new Stack<int>();
+            Stack<char> stackoperators = new Stack<char>();
+
+            foreach (char ch in input)
+            {
+                if (Char.IsDigit(ch))
+                {
+                    stackNumbers.Push(ch - '0');
+                }
+                else
+                {
+                    // //1-4+3*2+1/5
+                    if (stackoperators.Count == 0)
+                    {
+                        stackoperators.Push(ch);
+                    }
+                    else if (precedence[stackoperators.Peek()] < precedence[ch])
+                    {
+                        stackoperators.Push(ch);
+                    }
+                    else if (precedence[stackoperators.Peek()] > precedence[ch])
+                    {
+                        while (stackoperators.Count > 0 && precedence[stackoperators.Peek()] >= precedence[ch])
+                        {
+                            char op = stackoperators.Pop();
+
+                            int num1 = stackNumbers.Pop();
+                            int num2 = stackNumbers.Pop();
+                            int output = DoCalculattion(op, num2, num1);
+
+                            stackNumbers.Push(output);
+                        }
+
+                        stackoperators.Push(ch);
+                    }
+                    else
+                    {
+                        stackoperators.Push(ch);
+                    }
+                }
+            }
+
+            while (stackoperators.Count() > 0)
+            {
+                int num2 = stackNumbers.Pop();
+                int num1 = stackNumbers.Pop();
+                int test = DoCalculattion(stackoperators.Pop(), num1, num2);
+                stackNumbers.Push(test);
+            }
+            return stackNumbers.Peek();
+        }
+
+        public static int DoCalculattion(char op, int number1, int number2)
+        {
+            switch (op)
+            {
+                case '+':
+                    return number1 + number2;
+
+
+                case '-':
+                    return number1 - number2;
+
+
+                case '*':
+                    return number1 * number2;
+
+
+                case '/':
+                    return (number1 / number2);
+
+                default:
+                    return 0;
+
+            }
         }
     }
 }
