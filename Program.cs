@@ -17,19 +17,98 @@ namespace DataStructure
 
         static void Main()
         {
-            int[][] mat = new int[3][];
-            mat[0] = new int[5];
-            mat[1] = new int[5];
-            mat[2] = new int[5];
+            ArrayAndStrings.RemoveDuplicatesFromAString("aaabbbcadeff");
+        }
 
-            int rows = mat.GetUpperBound(0) + 1;
-            int cols = mat[0].Length;
-            string a = string.Empty;
+        public static int MeetingRooms2(int [][] intervals)
+        {
+            //[[2,15],[36,45],[9,29],[16,23],[4,9]]
+            int[][] mat = new int[2][];
+            mat[0] = new int[2] { 2, 15 };
+            mat[1] = new int[2] { 4, 9 };
+            mat[3] = new int[2] { 9, 29 };
+            mat[4] = new int[2] { 16, 23 };
+            mat[5] = new int[2] { 36,45 };
 
-            ArrayAndStrings.LongestIncreasingSubSequence(new int[] {3,4,-1,0,6,2,3 });
+            intervals = mat;
+
+            intervals = intervals.OrderBy(x => x[0]).ToArray();
+            int end = intervals[0][1];
+            int roomCount = 1;
+
+            for(int i=1;i<=mat.GetUpperBound(0);i++)
+            {
+                if(mat[i][0] < end)
+                {
+                    roomCount++;
+                    end = Math.Min(end, mat[i][1]);
+                }
+                else
+                {
+                    end = mat[i][1];
+                }
+            }
+
+            return roomCount;
+        }
+
+        public static int[][] MergeIntervals(int [][] intervals)
+        {
+            intervals = intervals.OrderBy(x => x[0]).ToArray();
+
+            List<int[]> merge = new List<int[]>();
+            merge.Add(intervals[0]);
+
+            for(int i=1;i<intervals.Length;i++)
+            {
+                //[[1,4][4,5]
+                if (merge[merge.Count-1][1]>=intervals[i][0])
+                {
+                    merge[merge.Count - 1][1] = Math.Max(merge[merge.Count - 1][1], intervals[i][1]);
+                }
+                else
+                {
+                    merge.Add(intervals[i]);
+                }
+            }
+
+            return merge.ToArray();
 
 
+        }
 
+        public static int MeetingRoom2(int [][] intervals)
+        {
+            if(intervals.Length==0)
+            {
+                return 0;
+            }
+
+            intervals = intervals.OrderBy(x => x[0]).ToArray();
+            List<int> times = new List<int>();
+
+            foreach(var interval in intervals)
+            {
+                if(times.Count==0)
+                {
+                    times.Add(interval[1]);
+                }
+                else
+                {
+                    int minTime = times.Min();
+
+                    if(minTime<=interval[0])
+                    {
+                        times.Remove(minTime);
+                    }
+
+                    times.Add(interval[1]);
+                }
+            }
+
+            return times.Count();
+
+           
         }
 
         public static void SieveOfErosethesus(int number)

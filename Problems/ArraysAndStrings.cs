@@ -891,19 +891,19 @@ namespace TestProject.Problems
             int[] result = new int[nums.Length];
             int overallMax = 0;
 
-            for(i=0;i<result.Length;i++)
+            for (i = 0; i < result.Length; i++)
             {
                 result[i] = 1;
             }
 
-            for(i=1;i<nums.Length;i++)
+            for (i = 1; i < nums.Length; i++)
             {
-                for(j=0;j<i;j++)
+                for (j = 0; j < i; j++)
                 {
-                    if(nums[j]<nums[i])
+                    if (nums[j] < nums[i])
                     {
                         result[i] = Math.Max(result[i], result[j] + 1);
-                        overallMax=  Math.Max(overallMax, result[i]);
+                        overallMax = Math.Max(overallMax, result[i]);
                     }
                 }
             }
@@ -923,27 +923,27 @@ namespace TestProject.Problems
 
         public static int KthSmallestInArray(int[] nums, int k)
         {
-            if(nums.Length<k)
+            if (nums.Length < k)
             {
                 return -1;
             }
 
             List<int> maxHeap = new List<int>();
 
-            for(int i=0;i<nums.Length;i++)
+            for (int i = 0; i < nums.Length; i++)
             {
-               if(maxHeap.Count < k)
+                if (maxHeap.Count < k)
                 {
                     maxHeap.Add(nums[i]);
                 }
                 else
                 {
-                    if(maxHeap.Max()>nums[i])
+                    if (maxHeap.Max() > nums[i])
                     {
                         maxHeap.Add(nums[i]);
                         if (maxHeap.Count > 0)
-                        maxHeap.Remove(maxHeap.Max());
-                    }   
+                            maxHeap.Remove(maxHeap.Max());
+                    }
                 }
             }
 
@@ -1595,6 +1595,156 @@ namespace TestProject.Problems
                     return 0;
 
             }
+        }
+
+        ///2*(5+5*2)/3
+        public static int BasicCalcutor3(string s)
+        {
+            Stack<string> numbers = new Stack<string>();
+
+            string exp = string.Empty;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == ' ')
+                {
+                    continue;
+                }
+
+                //"2*(5+5*2)+5"
+                if (char.IsDigit(s[i]))
+                {
+                    int temp = 0;
+                    while (i < s.Length && char.IsDigit(s[i]))
+                    {
+                        temp = temp * 10 + s[i] - '0';
+                        i++;
+                    }
+
+                    i--;
+
+                    numbers.Push(temp.ToString());
+                }
+                else if (s[i] == ')')
+                {
+                    exp = string.Empty;
+                    while (numbers.Count > 0 && numbers.Peek() != "(")
+                    {
+                        exp = numbers.Pop().ToString() + exp;
+                    }
+
+                    numbers.Pop();
+
+                    if (BasicCalculator2(exp) < 0)
+                    {
+                        if (numbers.Peek() == "-")
+                        {
+                            numbers.Pop();
+                            numbers.Push((BasicCalculator2(exp) * -1).ToString());
+                        }
+                    }
+
+                    numbers.Push(BasicCalculator2(exp).ToString());
+                }
+                else
+                {
+                    numbers.Push(s[i].ToString());
+                }
+            }
+
+            string result = string.Empty;
+            while (numbers.Count > 0)
+            {
+                result = numbers.Pop() + result;
+            }
+
+            return BasicCalculator2(result);
+
+
+        }
+
+        public static string RemoveDuplicatesFromAString(string input)
+        {
+            if (string.IsNullOrEmpty(input) || input.Length == 1)
+            {
+                return input;
+            }
+
+            StringBuilder result = new StringBuilder(string.Empty);
+
+            //aaabbbcadef
+            //abcadef
+            for(int i=0;i<input.Length-1;i++)
+            {
+                if(input[i]== input[i+1])
+                {
+                    continue;
+                }
+                else
+                {
+                    result = result.Append(input[i].ToString());
+                }
+            }
+
+            result = result.Append(input[input.Length - 1]);
+
+
+            return result.ToString();
+        }
+
+        public static int BasicCalculator2(string s)
+        {
+            int result = 0;
+            char sign = '+';
+            Stack<int> numbers = new Stack<int>();
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (Char.IsDigit(s[i]))
+                {
+                    int temp = 0;
+                    while (i < s.Length && Char.IsDigit(s[i]))
+                    {
+
+                        temp = temp * 10 + s[i] - '0';
+                        i++;
+                    }
+
+                    i--;
+
+                    if (sign == '+')
+                    {
+                        numbers.Push(temp);
+                    }
+                    else if (sign == '-')
+                    {
+                        numbers.Push(-temp);
+                    }
+                    else if (sign == '*')
+                    {
+                        int top = numbers.Pop();
+
+                        numbers.Push(top * temp);
+                    }
+                    else if (sign == '/')
+                    {
+                        int top = numbers.Pop();
+
+                        numbers.Push(top / temp);
+                    }
+                }
+                else if (s[i] != ' ')
+                {
+                    sign = s[i];
+                }
+            }
+
+            while (numbers.Count > 0)
+            {
+                result += numbers.Pop();
+            }
+
+            return result;
         }
     }
 }
