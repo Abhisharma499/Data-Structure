@@ -268,7 +268,7 @@ namespace TestProject.Problems
                 if (graphMatrix[startingVertex, i] == 1 && visited[i] == false)
                 {
 
-                    DetectCycleUnDirectedGraph(graphMatrix, i, visited, startingVertex);
+                   return DetectCycleUnDirectedGraph(graphMatrix, i, visited, startingVertex);
                 }
 
                 else if (graphMatrix[startingVertex, i] == 1 && visited[i] == true)

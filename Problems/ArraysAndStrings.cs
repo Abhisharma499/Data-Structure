@@ -40,6 +40,55 @@ namespace TestProject.Problems
     }
     public class ArrayAndStrings
     {
+        public static int MaximalSquare(char[][] matrix)
+        {
+            int max = 1;
+            bool isOneFound = false;
+
+            int rows = matrix.GetUpperBound(0) + 1;
+            int cols = matrix[0].Length;
+
+            int[,] copyMatrix = new int[rows, cols];
+
+            for (int i = 0; i < rows; i++)
+            {
+                copyMatrix[i, 0] = matrix[i][0] - '0';
+            }
+
+            for (int j = 0; j < cols; j++)
+            {
+                copyMatrix[0, j] = matrix[0][j] - '0';
+            }
+
+            for (int i = 1; i < rows; i++)
+            {
+                for (int j = 1; j < cols; j++)
+                {
+                    if (matrix[i][j] == '0')
+                    {
+                        copyMatrix[i, j] = 0;
+                        continue;
+                    }
+
+                    isOneFound = true;
+                    int min = Math.Min(copyMatrix[i - 1, j], copyMatrix[i, j - 1]);
+
+                    min = Math.Min(min, copyMatrix[i - 1, j - 1]);
+                    copyMatrix[i, j] = min + 1;
+
+                    max = Math.Max(max, copyMatrix[i, j]);
+                }
+            }
+
+            if (isOneFound)
+            {
+                return max * max;
+            }
+
+            return 0;
+
+
+        }
         public static void PrintAllSubsequences(string input, string output)
         {
             if (input.Length == 0)
@@ -1663,6 +1712,47 @@ namespace TestProject.Problems
 
         }
 
+        public static int CalculateTest(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return 0;
+            }
+
+            int last = 0, total = 0, pow = 0;
+
+            for (int i = input.Length - 1; i >= 0; i--)
+            {
+
+                if (input[i] == ' ')
+                {
+                    continue;
+                }
+
+                if (input[i] == '+')
+                {
+                    total += last;
+                    last = 0;
+                    pow = 0;
+                }
+                else if (input[i] == '-')
+                {
+                    total -= last;
+                    last = 0;
+                    pow = 0;
+                }
+                else
+                {
+                    last = last + input[i] - '0' * (int)Math.Pow(10, pow);
+                    pow++;
+                }
+            }
+
+            total += last;
+
+            return total;
+        }
+
         public static string RemoveDuplicatesFromAString(string input)
         {
             if (string.IsNullOrEmpty(input) || input.Length == 1)
@@ -1674,9 +1764,9 @@ namespace TestProject.Problems
 
             //aaabbbcadef
             //abcadef
-            for(int i=0;i<input.Length-1;i++)
+            for (int i = 0; i < input.Length - 1; i++)
             {
-                if(input[i]== input[i+1])
+                if (input[i] == input[i + 1])
                 {
                     continue;
                 }
@@ -1746,5 +1836,325 @@ namespace TestProject.Problems
 
             return result;
         }
+
+        public static bool IsAlienSorted(string[] words, string order)
+        {
+            if (words.Length == 0 || words.Length == 1)
+            {
+                return true;
+            }
+
+            Dictionary<char, int> mapper = new Dictionary<char, int>();
+            int i = 0;
+
+            foreach (char ch in order)
+            {
+                mapper.Add(ch, i);
+                i++;
+            }
+
+            for (i = 0; i < words.Length - 1; i++)
+            {
+                string word1 = words[i];
+                string word2 = words[i + 1];
+
+                int minLength = Math.Min(word1.Length, word2.Length);
+
+                if (minLength != word1.Length && word1.StartsWith(word2))
+                {
+                    return false;
+                }
+
+                for (int j = 0; j < minLength; j++)
+                {
+                    if (mapper[word1[j]] < mapper[word2[j]])
+                    {
+                        break;
+                    }
+                    else if (mapper[word1[j]] > mapper[word2[j]])
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+
+        }
+
+        public static string AddBinary(string a, string b)
+        {
+            if (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b))
+            {
+                return string.Empty;
+            }
+
+            if (string.IsNullOrEmpty(a))
+            {
+                return b;
+            }
+
+            if (string.IsNullOrEmpty(b))
+            {
+                return a;
+            }
+
+            int aLength = a.Length;
+            int bLength = b.Length;
+            int length = Math.Max(aLength, bLength);
+
+            int i = 0;
+            int carry = 0;
+            int aValue = 0, bValue = 0;
+
+            string result = string.Empty;
+            int temp = 0;
+            i = 0;
+            //a="1010", b = "1011"
+            while (i < aLength || i < bLength)
+            {
+                aValue = 0;
+                bValue = 0;
+
+                if (i < aLength)
+                {
+                    aValue = a[aLength - i - 1] == '1' ? 1 : 0;
+                }
+
+                if (i < bLength)
+                {
+                    bValue = b[bLength - i - 1] == '1' ? 1 : 0;
+                }
+
+                temp = aValue + bValue + carry;
+
+
+                result = temp % 2 + result;
+
+                carry = temp / 2;
+
+                i++;
+            }
+
+            if (carry == 1)
+            {
+                result = "1" + result;
+            }
+
+            return result;
+        }
+
+        public static bool ValidWordAbbreviation(string word, string abbr)
+        {
+            //word = "a", abbr = "2"
+            int num = 0;
+            int j = 0;
+            for (int i = 0; i < abbr.Length; i++)
+            {
+                if (j >= word.Length)
+                {
+                    return false;
+                }
+                if (Char.IsLetter(abbr[i]))
+                {
+                    if (word[j] != abbr[i])
+                    {
+                        return false;
+                    }
+
+                    j++;
+                }
+                else
+                {
+                    //"internationalization"
+                    //"i18n"
+                    while (Char.IsDigit(abbr[i]))
+                    {
+                        num = num * 10 + abbr[i] - '0';
+                        i++;
+
+                        if (i >= abbr.Length)
+                        {
+                            break;
+                        }
+                    }
+
+                    i--;
+
+                    j = j + num;
+
+                    if (num >= word.Length)
+                    {
+                        return false;
+                    }
+                    num = 0;
+                }
+            }
+
+            if (j < word.Length - 1)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool validPalindrome(String s)
+        {
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                s = s.Remove(i, 1);
+                if (IsPalindrome(s))
+                {
+                    return true;
+                }
+
+                s = s.Insert(i, c.ToString());
+            }
+
+            return false;
+        }
+
+        public static bool IsPalindrome(string s)
+        {
+            int end = s.Length - 1;
+            int i = 0;
+
+            while (i < end)
+            {
+                if (s[i] != s[end])
+                {
+                    return false;
+                }
+
+                i++;
+                end--;
+            }
+
+            return true;
+        }
+
+        public bool ValidPalindrome(string s)
+        {
+            int count1 = 0, count2 = 0;
+
+            int start = 0, end = s.Length - 1;
+
+            while (start < end)
+            {
+                if (s[start] == s[end])
+                {
+                    start++; end--;
+                }
+                else
+                {
+                    start++;
+                    count1++;
+                }
+            }
+
+            start = 0; end = s.Length - 1;
+            while (start < end)
+            {
+                if (s[start] == s[end])
+                {
+                    start++; end--;
+                }
+                else
+                {
+                    end--;
+                    count2++;
+                }
+            }
+
+            if (count1 == 0 || count2 == 0)
+            {
+                return true;
+            }
+
+            if (count1 == 1 || count2 == 1)
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+
+
+        public bool WordBreak(string s, IList<string> wordDict)
+        {
+            if (s.Length == 0)
+            {
+                return true;
+            }
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                string input = s.Substring(0, i + 1);
+
+                if (wordDict.Contains(input))
+                {
+                    string right = s.Substring(i + 1);
+
+                    WordBreak(right, wordDict);
+                }
+            }
+
+            return false;
+
+        }
+
+        public static IList<string> WordBreak2(string s, List<string> wordDict, List<string> result, string temp)
+        {
+            if (s.Length == 0)
+            {
+                result.Add(temp);
+
+                return result;
+            }
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                string input = s.Substring(0, i + 1);
+
+                //catsanddog
+                if (wordDict.Contains(input))
+                {
+                    string right = s.Substring(i + 1);
+
+                    WordBreak2(right, wordDict, result, temp + " " + input);
+                }
+            }
+
+            return result;
+        }
+
+        public static bool IsArmstrong(int n)
+        {
+            if (n < 10)
+            {
+                return true;
+            }
+
+            int result = 0;
+            int temp = 0;
+            int copyn = n;
+
+
+            while (n > 0)
+            {
+                temp = n % 10;
+                temp = (int)Math.Pow(temp, 3);
+                result = result + temp;
+                n = n / 10;
+            }
+
+            return result == copyn;
+        }
+
+
+
     }
 }

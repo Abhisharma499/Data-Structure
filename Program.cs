@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using TestProject.Problems;
@@ -9,15 +10,143 @@ using TestProject.System_Design;
 
 namespace DataStructure
 {
+    public class Trie
+    {
+        public bool IsEnd;
+        public Dictionary<string, Trie> next;
+    }
     public class Program
     {
+        static Trie root;
 
+        static string output = string.Empty;
+        Program()
+        {
+            root = new Trie();
+        }
         static AutoResetEvent evenReady = new AutoResetEvent(true);
         static AutoResetEvent oddReady = new AutoResetEvent(false);
 
         static void Main()
         {
-            ArrayAndStrings.RemoveDuplicatesFromAString("aaabbbcadeff");
+
+
+            ArrayAndStrings.IsArmstrong(1634);
+        }
+
+        public static void MeltWaterSolution()
+        {
+            string fileNameCensoredWords = @"Censored.txt";
+            HashSet<string> censoredWords =  ParseCensoredWords(fileNameCensoredWords);
+
+            foreach(string input in censoredWords)
+            {
+                PrepareTrie(input);
+            }
+
+            string[] fileContents = File.ReadAllText("Input.txt").Split(' ');
+        }
+
+        public static void PrepareTrie(string input)
+        {
+            Trie head = root;
+
+            foreach(string str in input.Split(' '))
+            {
+                if(!head.next.ContainsKey(str))
+                {
+                    head.next.Add(str, new Trie());
+               
+                }
+
+                head = head.next[str];
+            }
+
+            head.IsEnd = true;
+        }
+
+        public static HashSet<string> ParseCensoredWords(string fileName)
+        {
+            string[] lines = File.ReadAllLines(fileName);
+
+            string fileContent = string.Join("", lines);
+            fileContent = fileContent.Trim();
+
+            HashSet<string> cencoredWords = new HashSet<string>();
+
+            int lengthOfText = fileContent.Length;
+            string text = string.Empty;
+
+            for (int i=0;i<lengthOfText;i++)
+            {
+                if(fileContent[i] == ',')
+                {
+                    continue;
+                }
+                else if (fileContent[i].ToString().Trim() == string.Empty)
+                {
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        cencoredWords.Add(text);
+
+                        text = string.Empty;
+                    }
+                }
+                else if(fileContent[i]=='"')
+                {
+                    text = string.Empty;
+
+                    i++;
+
+                    //"Abhi"
+                    while(i< lengthOfText && fileContent[i]!='"')
+                    {
+                        text = text + fileContent[i].ToString();
+                        i++;
+                    }
+
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        cencoredWords.Add(text);
+
+                        text = string.Empty;
+                    }
+
+                }
+
+                else if (fileContent[i] == '\'')
+                {
+                    text = string.Empty;
+
+                    i++;
+
+                    while (i < lengthOfText && fileContent[i] != '\'')
+                    {
+                        text = text + fileContent[i].ToString();
+                        i++;
+                    }
+
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        cencoredWords.Add(text);
+
+                        text = string.Empty;
+                    }  
+                }
+                else
+                {
+                    text = text + fileContent[i].ToString();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                cencoredWords.Add(text);
+
+                text = string.Empty;
+            }
+
+            return cencoredWords;
         }
 
         public static int MeetingRooms2(int [][] intervals)

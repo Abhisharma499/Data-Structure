@@ -243,6 +243,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Censored.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Microsoft\concatenated_string_length_with_unique_characters\CMakeLists.txt" />
     <Content Include="Microsoft\concatenated_string_length_with_unique_characters\main.cpp" />
     <Content Include="Microsoft\count_visible_nodes_in_binary_tree\CMakeLists.txt" />

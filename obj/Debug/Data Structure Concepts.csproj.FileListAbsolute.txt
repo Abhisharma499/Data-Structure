@@ -22,3 +22,5 @@ C:\Users\abhisheksharma\source\repos\Data Strcuture\obj\Debug\Data Structure Con
 C:\Users\abhisheksharma\source\repos\Data Strcuture\obj\Debug\Data Structure Concepts.csproj.CopyComplete
 C:\Users\abhisheksharma\source\repos\Data Strcuture\obj\Debug\TestProject.exe
 C:\Users\abhisheksharma\source\repos\Data Strcuture\obj\Debug\TestProject.pdb
+C:\Users\abhisheksharma\source\repos\Data Strcuture\bin\Debug\Censored.txt
+C:\Users\abhisheksharma\source\repos\Data Strcuture\bin\Debug\Input.txt
