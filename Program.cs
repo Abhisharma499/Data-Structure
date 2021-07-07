@@ -31,122 +31,79 @@ namespace DataStructure
         {
 
 
-            ArrayAndStrings.IsArmstrong(1634);
+            SlidingWindow.MaxOfAllSubArrayOfSizeK(new int[] { 1, 3, 1, 2, 0, 5 }, 3);
+
         }
 
-        public static void MeltWaterSolution()
+        public static int CompareStrings(string a, string b)
         {
-            string fileNameCensoredWords = @"Censored.txt";
-            HashSet<string> censoredWords =  ParseCensoredWords(fileNameCensoredWords);
+            string first = a + b;
+            string second = b + a;
 
-            foreach(string input in censoredWords)
-            {
-                PrepareTrie(input);
-            }
-
-            string[] fileContents = File.ReadAllText("Input.txt").Split(' ');
+            return second.CompareTo(first);
         }
 
-        public static void PrepareTrie(string input)
+        public static string LargestNumber(int[] nums)
         {
-            Trie head = root;
+            string[] strNums = new string[nums.Length];
 
-            foreach(string str in input.Split(' '))
+            int i = 0;
+            foreach (var num in nums)
             {
-                if(!head.next.ContainsKey(str))
-                {
-                    head.next.Add(str, new Trie());
-               
-                }
-
-                head = head.next[str];
+                strNums[i++] = num.ToString();
             }
 
-            head.IsEnd = true;
+            Array.Sort(strNums, CompareStrings);
+
+            string str = string.Empty;
+
+            foreach (var itemStr in strNums)
+            {
+                str += itemStr;
+            }
+
+            if(strNums[0]=="0")
+            {
+                return "0";
+            }
+
+            return str;
         }
 
-        public static HashSet<string> ParseCensoredWords(string fileName)
+        public static int[][] MatrixReshape(int[][] mat, int r, int c)
         {
-            string[] lines = File.ReadAllLines(fileName);
+            int rows = mat.GetUpperBound(0) + 1;
+            int cols = mat[0].Length;
+            List<int> nums = new List<int>();
 
-            string fileContent = string.Join("", lines);
-            fileContent = fileContent.Trim();
-
-            HashSet<string> cencoredWords = new HashSet<string>();
-
-            int lengthOfText = fileContent.Length;
-            string text = string.Empty;
-
-            for (int i=0;i<lengthOfText;i++)
+            if (rows * cols != r * c)
             {
-                if(fileContent[i] == ',')
+                return mat;
+            }
+
+
+            int[][] result = new int[r][];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
                 {
-                    continue;
-                }
-                else if (fileContent[i].ToString().Trim() == string.Empty)
-                {
-                    if (!string.IsNullOrEmpty(text))
-                    {
-                        cencoredWords.Add(text);
-
-                        text = string.Empty;
-                    }
-                }
-                else if(fileContent[i]=='"')
-                {
-                    text = string.Empty;
-
-                    i++;
-
-                    //"Abhi"
-                    while(i< lengthOfText && fileContent[i]!='"')
-                    {
-                        text = text + fileContent[i].ToString();
-                        i++;
-                    }
-
-                    if (!string.IsNullOrEmpty(text))
-                    {
-                        cencoredWords.Add(text);
-
-                        text = string.Empty;
-                    }
-
-                }
-
-                else if (fileContent[i] == '\'')
-                {
-                    text = string.Empty;
-
-                    i++;
-
-                    while (i < lengthOfText && fileContent[i] != '\'')
-                    {
-                        text = text + fileContent[i].ToString();
-                        i++;
-                    }
-
-                    if (!string.IsNullOrEmpty(text))
-                    {
-                        cencoredWords.Add(text);
-
-                        text = string.Empty;
-                    }  
-                }
-                else
-                {
-                    text = text + fileContent[i].ToString();
+                    nums.Add(mat[i][j]);
                 }
             }
 
-            if (!string.IsNullOrEmpty(text))
+            int count = 0;
+            for (int i = 0; i < r; i++)
             {
-                cencoredWords.Add(text);
-
-                text = string.Empty;
+                result[i] = new int[c];
+                for (int j = 0; j < c; j++)
+                {
+                   
+                    result[i][j] = nums[count++];
+                }
             }
 
-            return cencoredWords;
+            return result;
         }
 
         public static int MeetingRooms2(int [][] intervals)

@@ -3,6 +3,8 @@ using System.Linq;
 
 namespace TestProject.Problems
 {
+    
+
     public static class StackProblems
     {
         public static List<int> LargestIntergerToRight(List<int> array, Stack<int> myStack)

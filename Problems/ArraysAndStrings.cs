@@ -40,6 +40,37 @@ namespace TestProject.Problems
     }
     public class ArrayAndStrings
     {
+       static  string output = string.Empty;
+        static int max = 0;
+        public static string LongestPalindrome(string s)
+        {
+            for (int i = 0; i < s.Length - 1; i++)
+            {
+                Find(i, i, s);
+                Find(i, i + 1, s);
+            }
+
+            return output;
+        }
+
+        public static void Find(int start, int end, string s)
+        {
+            while (start >= 0 && end <= s.Length - 1 && s[start] == s[end])
+            {
+                start--;
+                end++;
+            }
+
+            start++;
+            end--;
+
+            if (end - start + 1 >= max)
+            {
+                output = s.Substring(start, end - start + 1);
+                max = end - start + 1;
+            }
+
+        }
         public static int MaximalSquare(char[][] matrix)
         {
             int max = 1;
@@ -2155,6 +2186,230 @@ namespace TestProject.Problems
         }
 
 
+        public static List<List<string>> GroupStrings(string[] strings)
+        {
+            List<List<string>> result = new List<List<string>>();
+            Dictionary<string, List<string>> mapper = new Dictionary<string, List<string>>();
+            ///Input: strings = ["abc","bcd","acef","xyz","az","ba","a","z"]
+            //Output:[["acef"],["a","z"],["abc","bcd","xyz"],["az","ba"]]
+            int diff = 0;
+            string key = string.Empty;
+
+            foreach (string input in strings)
+            {
+                if (input.Length > 1)
+                {
+                    for (int i = 0; i < input.Length - 1; i++)
+                    {
+
+                        diff = input[i + 1] - input[i];
+
+                        if (diff < 0)
+                        {
+                            diff = diff + 26;
+                        }
+
+                        key = key + diff + "#";
+                    }
+
+                    if (!string.IsNullOrEmpty(key))
+                    {
+                        if (mapper.ContainsKey(key))
+                        {
+                            mapper[key].Add(input);
+                        }
+                        else
+                        {
+                            mapper.Add(key, new List<string>() { input });
+                        }
+                    }
+
+                    key = string.Empty;
+                }
+                else
+                {
+                    if (mapper.ContainsKey("1"))
+                    {
+                        mapper["1"].Add(input);
+                    }
+                    else
+                    {
+                        mapper.Add("1", new List<string>() { input });
+                    }
+                }
+            }
+
+            foreach (var pair in mapper)
+            {
+                result.Add(pair.Value);
+            }
+
+            return result;
+        }
+
+        public static int[][] KClosest(int[][] points, int K)
+        {
+            int[][] result = new int[K][];
+
+            if(K==0)
+            {
+                return result;
+            }
+
+            SortedDictionary<double, List<List<int>>> keyValuePairs = new SortedDictionary<double, List<List<int>>>();
+            double distance = 0;
+
+            foreach (int[] point in points)
+            {
+                distance = Math.Abs(Distance(0, 0, point[0], point[1]));
+
+                if (!keyValuePairs.ContainsKey(distance))
+                {
+                    keyValuePairs.Add(distance, new List<List<int>>() { new List<int>() { point[0], point[1] } });
+                }
+                else
+                {
+                    keyValuePairs[distance].Add(new List<int>() { point[0], point[1] });
+                }
+            }
+
+            List<List<int>> test = new List<List<int>>();
+
+            foreach (var pair in keyValuePairs)
+            {
+                foreach (List<int> p in pair.Value)
+                {
+                    K--;
+                    test.Add(p);
+
+                    if (K == 0)
+                    {
+                        return test.Select(a => a.ToArray()).ToArray();
+                    }
+                }
+            }
+
+            return test.Select(a => a.ToArray()).ToArray();
+        }
+
+        public static int[] ShortestToChar(string s, char c)
+        {
+            int[] result = new int[s.Length];
+            int[] LR = new int[s.Length];
+            int[] RL = new int[s.Length];
+            int pos = -1;
+
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == c)
+                {
+                    pos = i;
+                }
+                else if (pos == -1)
+                {
+                    LR[i] = int.MaxValue;
+                }
+                else
+                {
+                    LR[i] = i - pos;
+                }
+
+            }
+
+            for (int i = s.Length - 1; i > 0; i--)
+            {
+                if (s[i] == c)
+                {
+                    pos = i;
+                }
+                else if (pos == -1)
+                {
+                    RL[i] = int.MaxValue;
+                }
+                else
+                {
+                    RL[i] = pos - i;
+                }
+            }
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                result[i] = Math.Min(LR[i], RL[i]);
+            }
+
+            return result;
+
+        }
+
+        public static int TrailingZeroes(int n)
+        {
+            if (n < 5)
+            {
+                return 0;
+            }
+
+            int result = 0;
+            int five = 5;
+            int count = 1;
+            int number = 5;
+            while (true)
+            {
+                int temp = n / five;
+
+                if (temp == 0)
+                {
+                    return result;
+                }
+                result = result + temp;
+
+                five =(int)Math.Pow(number, ++count);
+
+            }
+
+            return result;
+        }
+
+        public static double Distance(double x1, double y1, double x2, double y2)
+        {
+            return Math.Sqrt(((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)));
+        }
+
+        public static IList<IList<string>> Partition(string s)
+        {
+            List<string> temp = new List<string>();
+            List<IList<string>> result = new List<IList<string>>();
+
+            Partition(temp, result, s);
+
+
+            return result;
+        }
+
+        public static void Partition(List<string> temp, List<IList<string>> result, string s)
+        {
+            if (s.Length == 0)
+            {
+                if (temp != null && temp.Count() > 0)
+                {
+                    result.Add(temp);
+                    return;
+                }
+            }
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                string prefix = s.Substring(0, i + 1);
+                string ros = s.Substring(i + 1);
+
+                if (IsPalindrome(prefix))
+                {
+                    temp.Add(prefix);
+                    Partition(temp, result, ros);
+                    temp = new List<string>();
+                }
+            }
+        }
 
     }
 }

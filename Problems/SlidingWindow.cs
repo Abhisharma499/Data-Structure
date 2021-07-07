@@ -19,17 +19,17 @@ namespace TestProject.Problems
             Dictionary<char, int> map = new Dictionary<char, int>();
             Dictionary<char, int> helper = new Dictionary<char, int>();
 
-            
-            if(s.Length< t.Length)
+
+            if (s.Length < t.Length)
             {
                 return string.Empty;
             }
 
-            int startIndex=-1, endIndex=-1, i=0, j=0;
+            int startIndex = -1, endIndex = -1, i = 0, j = 0;
 
-            foreach(var ch in t)
+            foreach (var ch in t)
             {
-                if(map.ContainsKey(ch))
+                if (map.ContainsKey(ch))
                 {
                     map[ch]++;
                 }
@@ -39,9 +39,9 @@ namespace TestProject.Problems
                 }
             }
 
-            while(j<s.Length)
+            while (j < s.Length)
             {
-                if(helper.ContainsKey(s[j]))
+                if (helper.ContainsKey(s[j]))
                 {
                     helper[s[j]]++;
                 }
@@ -50,11 +50,11 @@ namespace TestProject.Problems
                     helper.Add(s[j], 1);
                 }
 
-                while(!CompareDictionary(helper, map))
+                while (!CompareDictionary(helper, map))
                 {
                     j++;
 
-                    if(j==s.Length)
+                    if (j == s.Length)
                     {
                         break;
                     }
@@ -69,7 +69,7 @@ namespace TestProject.Problems
                     }
                 }
 
-                if(CompareDictionary(helper, map))
+                if (CompareDictionary(helper, map))
                 {
                     if (j - i + 1 < minLength)
                     {
@@ -101,7 +101,7 @@ namespace TestProject.Problems
                         if (helper[s[i]] == 0)
                         {
                             helper.Remove(s[i]);
-                        }          
+                        }
                     }
 
                     i++;
@@ -110,12 +110,12 @@ namespace TestProject.Problems
                 j++;
             }
 
-            if(startIndex == -1 || endIndex == -1)
+            if (startIndex == -1 || endIndex == -1)
             {
                 return string.Empty;
             }
 
-            return s.Substring(startIndex, endIndex-startIndex+1);
+            return s.Substring(startIndex, endIndex - startIndex + 1);
         }
 
         public static string MinWindowEfficient(string s, string t)
@@ -142,13 +142,13 @@ namespace TestProject.Problems
                 }
             }
 
-       // Input: s = "ADOBECODEBANC", t = "ABC"
-            while (j<s.Length)
+            // Input: s = "ADOBECODEBANC", t = "ABC"
+            while (j < s.Length)
             {
-                if(map.ContainsKey(s[j]))
+                if (map.ContainsKey(s[j]))
                 {
-                    if(map[s[j]]>0)
-                    {                  
+                    if (map[s[j]] > 0)
+                    {
                         count++;
                     }
 
@@ -156,11 +156,11 @@ namespace TestProject.Problems
                 }
 
                 //Input: s = "ADOBECODEBANC", t = "ABC"
-                while (count!=t.Length)
+                while (count != t.Length)
                 {
                     j++;
 
-                    if(j== s.Length)
+                    if (j == s.Length)
                     {
                         break;
                     }
@@ -176,9 +176,9 @@ namespace TestProject.Problems
                 }
 
                 //Input: s = "ADOBECODEBANC", t = "ABC"
-                if (t.Length== count)
+                if (t.Length == count)
                 {
-                    if(j-i+1< minLength)
+                    if (j - i + 1 < minLength)
                     {
                         minLength = Math.Min(minLength, j - i + 1);
                         startIndex = i;
@@ -187,7 +187,7 @@ namespace TestProject.Problems
                 }
 
                 //Input: s = "ADOBECODEBANC", t = "ABC"
-                while (count==t.Length)
+                while (count == t.Length)
                 {
                     if (t.Length == count)
                     {
@@ -210,7 +210,7 @@ namespace TestProject.Problems
 
                     }
 
-                    
+
 
                     i++;
                 }
@@ -218,7 +218,7 @@ namespace TestProject.Problems
                 j++;
             }
 
-            if(startIndex==-1 || endIndex== -1)
+            if (startIndex == -1 || endIndex == -1)
             {
                 return string.Empty;
             }
@@ -227,22 +227,21 @@ namespace TestProject.Problems
 
         }
 
-
         public static bool CompareDictionary(Dictionary<char, int> created, Dictionary<char, int> original)
         {
-            if(created.Count()< original.Count)
+            if (created.Count() < original.Count)
             {
                 return false;
             }
-            foreach(var pair in original)
+            foreach (var pair in original)
             {
-                if(!created.ContainsKey(pair.Key))
+                if (!created.ContainsKey(pair.Key))
                 {
                     return false;
                 }
                 else
                 {
-                    if(created[pair.Key]<pair.Value)
+                    if (created[pair.Key] < pair.Value)
                     {
                         return false;
                     }
@@ -278,7 +277,7 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                 }
                 else
                 {
-                    if(!keyValuePairs.ContainsKey(sum))
+                    if (!keyValuePairs.ContainsKey(sum))
                     {
                         keyValuePairs.Add(sum, i);
                     }
@@ -679,45 +678,60 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
         {
             int i = 0, j = 0;
             List<int> maxNumbers = new List<int>();
+            List<int> result = new List<int>();
 
+            //[1,3,1,2,0,5]
+            //3
             while (j < numbers.Length)
             {
-                if (maxNumbers.Count == 0)
+                while (maxNumbers.Count() > 0 && maxNumbers[maxNumbers.Count() - 1] < numbers[j])
                 {
-                    maxNumbers.Add(numbers[j]);
+                    if (maxNumbers.Count() > 0)
+                    {
+                        maxNumbers.RemoveAt(maxNumbers.Count() - 1);
+                    }
                 }
-                else if (maxNumbers[maxNumbers.Count - 1] <= numbers[j])
-                {
-                    maxNumbers.Add(numbers[j]);
-                }
+
+                maxNumbers.Add(numbers[j]);
 
                 while ((j - i + 1) < windowSize)
                 {
                     j++;
-
-                    if (maxNumbers[maxNumbers.Count - 1] <= numbers[j])
+                    //[1,3,1,2,0,5]
+                    //3
+                    while (maxNumbers.Count() > 0 && maxNumbers[maxNumbers.Count() - 1] < numbers[j])
                     {
-                        maxNumbers.Add(numbers[j]);
+                        if (maxNumbers.Count() > 0)
+                        {
+                            maxNumbers.RemoveAt(maxNumbers.Count() - 1);
+                        }
                     }
+
+                    maxNumbers.Add(numbers[j]);
+
                 }
 
+                //[1,3,1,2,0,5]
+                //3
                 if ((j - i + 1) == windowSize)
                 {
                     if (maxNumbers.Count > 0)
                     {
-                        Console.WriteLine(maxNumbers[maxNumbers.Count - 1]);
+                        result.Add(maxNumbers[0]);
                     }
                 }
+
 
                 if (maxNumbers.Count > 0)
                 {
-                    if (maxNumbers[0] == numbers[i])
+                    if (numbers[i] == maxNumbers[0])
                     {
                         maxNumbers.RemoveAt(0);
                     }
+
+                    i++;
                 }
 
-                i++;
                 j++;
             }
         }
