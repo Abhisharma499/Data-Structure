@@ -700,7 +700,9 @@ namespace TestProject.Problems
             }
             String out1 = output;
             String out2 = output;
+
             out2 += input[0];
+
             input = input.Remove(0, 1);
 
             permutationFind(input, out1);

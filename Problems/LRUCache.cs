@@ -23,115 +23,69 @@ namespace TestProject.Problems
     }
     public class LRUCache
     {
-        Dictionary<int, Node> keyValuePairs = new Dictionary<int, Node>();
+        Dictionary<int, Node> map;
         Node head;
         Node tail;
-        readonly int MaxCacheLimit;
-        static int counter = 0;
+        int MaxCacheLimit;
+
         public LRUCache(int capacity)
         {
+            head = new Node(0, 0);
+            tail = new Node(0, 0);
             MaxCacheLimit = capacity;
+            head.next = tail;
+            tail.prev = head;
+            map = new Dictionary<int, Node>();
         }
+
         public int Get(int key)
         {
-
-            if (keyValuePairs.ContainsKey(key))
+            if (!map.ContainsKey(key))
             {
-                keyValuePairs[key] = BringNodeToFront(keyValuePairs[key]);
-                return keyValuePairs[key].val;
+                return -1;
             }
 
-            return -1;
+            Node node = map[key];
+            Remove(node); 
+            Insert(node);
+            return node.val;
         }
-        public Node BringNodeToFront(Node node)
-        {
-            if (node.next == null && node.prev == null)
-            {
-                head = node;
-                return head;
-            }
 
-            if (node.prev != null)
-            {
-                node.prev.next = node.next;
-            }
-            if (node.next != null)
-            {
-                node.next.prev = node.prev;
-            }
-            else
-            {
-                tail = node.prev;
-            }
-
-            head.prev = node;
-            node.next = head;
-            node.prev = null;
-            head = node;
-
-            return head;
-        }
         public void Put(int key, int value)
         {
-            if (MaxCacheLimit == counter)
+            if (!map.ContainsKey(key))
             {
-                if (keyValuePairs.ContainsKey(key))
+                if (MaxCacheLimit == map.Count())
                 {
-                    keyValuePairs[key] = BringNodeToFront(keyValuePairs[key]);
+                    Remove(tail.prev);
                 }
-                else
-                {
 
-                    keyValuePairs.Remove(RemoveNodeFromEnd().key);
-                    keyValuePairs.Add(key, AdNodeToTheBeggining(key, value));
-                }
+                Node newNode = new Node(key, value);
+                Insert(newNode);
             }
             else
             {
-                if (keyValuePairs.ContainsKey(key))
-                {
-                    keyValuePairs[key] = BringNodeToFront(keyValuePairs[key]);
-                }
-                else
-                {
-                    keyValuePairs.Add(key, AdNodeToTheBeggining(key, value));
-                    counter++;
-                }
+                Node curr = map[key];
+                Remove(curr);
+                Node newNode = new Node(key, value);
+                Insert(newNode);
             }
         }
-        public Node RemoveNodeFromEnd()
+
+        public void Insert(Node node)
         {
-            if (tail.next == null && tail.prev == null)
-            {
-                head = null;
-                return tail;
-            }
-
-
-            Node removeNoderemoveNode = tail;
-            tail.prev.next = null;
-            tail = tail.prev;
-
-            return removeNoderemoveNode;
+            map.Add(node.key,node);
+            node.next = head.next;
+            head.next.prev = node;
+            node.prev = head;
+            head.next = node;
         }
-        public Node AdNodeToTheBeggining(int key, int val)
+
+        public void Remove(Node node)
         {
-            Node Node = new Node(key, val);
-            Node.prev = null;
-            Node.next = head;
-            if (head != null)
-            {
-                head.prev = Node;
-            }
-            head = Node;
-
-            if (tail == null)
-            {
-                tail = head;
-                tail.next = null;
-            }
-
-            return head;
+            map.Remove(node.key);
+            node.next.prev = node.prev;
+            node.prev.next = node.next;
         }
     }
 }

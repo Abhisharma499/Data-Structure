@@ -1,0 +1,59 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "min_steps_to_make_piles_equal_height",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "min_steps_to_make_piles_equal_height::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-min_steps_to_make_piles_equal_height-Debug-4454ccf06c6b21bf8eca.json",
+					"name" : "min_steps_to_make_piles_equal_height",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Abhishek.Sharma1/source/repos/Abhisharma499/Data-Structure/Microsoft/min_steps_to_make_piles_equal_height/out/build/x64-Debug",
+		"source" : "C:/Users/Abhishek.Sharma1/source/repos/Abhisharma499/Data-Structure/Microsoft/min_steps_to_make_piles_equal_height"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}

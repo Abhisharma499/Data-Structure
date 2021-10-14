@@ -1,0 +1,59 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "largest_integer",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "largest_integer::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-largest_integer-Debug-c67881af021049510370.json",
+					"name" : "largest_integer",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Abhishek.Sharma1/source/repos/Abhisharma499/Data-Structure/Microsoft/largest_integer/out/build/x64-Debug",
+		"source" : "C:/Users/Abhishek.Sharma1/source/repos/Abhisharma499/Data-Structure/Microsoft/largest_integer"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}

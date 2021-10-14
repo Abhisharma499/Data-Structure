@@ -1,0 +1,59 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "unique_integers_that_sum_up_to_0",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "unique_integers_that_sum_up_to_0::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-unique_integers_that_sum_up_to_0-Debug-a7bbfd63aaee7d38b1c6.json",
+					"name" : "unique_integers_that_sum_up_to_0",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Abhishek.Sharma1/source/repos/Abhisharma499/Data-Structure/Microsoft/unique_integers_that_sum_up_to_0/out/build/x64-Debug",
+		"source" : "C:/Users/Abhishek.Sharma1/source/repos/Abhisharma499/Data-Structure/Microsoft/unique_integers_that_sum_up_to_0"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}

@@ -10,7 +10,104 @@ namespace TestProject.Problems
     {
 
 
-        //Input: s = "ADOBECODEBANC", t = "ABC"
+        //Input: s = "aabcbcdbca", t = "dbca"
+
+        public static string MinWindowDistinct(string str)
+        {
+            Dictionary<char, int> map = new Dictionary<char, int>();
+
+            //aabcbcdbca
+            foreach (char c in str)
+            {
+                if(!map.ContainsKey(c))
+                {
+                    map.Add(c, 1);
+                }
+                else
+                {
+                    map[c]++;
+                }
+            }
+
+            //aabcbcdbca
+            Dictionary<char, int> map2 = new Dictionary<char, int>();
+
+            int i = 0, j = 0;
+
+            string result = string.Empty;
+            int min = int.MaxValue;
+
+            //aabcbcdbca
+            while (j<str.Length)
+            {
+                if(map2.ContainsKey(str[j]))
+                {
+                    map2[str[j]]++;
+                }
+                else
+                {
+                    map2.Add(str[j], 1);
+                }
+
+                //aabcbcdbca
+                if (CompreMaps(map,map2))
+                {
+                    if (j - i + 1 < min)
+                    {
+                        result = str.Substring(i, j - i + 1);
+                        min = j - i + 1;
+                    }
+                }
+
+                //aabcbcdbca
+                while (j-1+1> map2.Count() && map.Count() == map2.Count())
+                {
+                    if(map2.ContainsKey(str[i]))
+                    {
+                        map2[str[i]]--;
+
+                        if(map2[str[i]]==0)
+                        {
+                            map2.Remove(str[i]);
+                        }
+
+                        i++;
+
+                        //aabcbcdbca
+                        if (CompreMaps(map, map2))
+                        {
+                            if (j - i + 1 < min)
+                            {
+                                result = str.Substring(i, j - i + 1);
+                                min = j - i + 1;
+                            }
+                        }
+                    }
+                }
+
+                j++;
+            }
+
+            return result;
+        }
+
+        public static bool CompreMaps(Dictionary<char,int> map, Dictionary<char,int> map2)
+        {
+            if(map.Count()!=map2.Count())
+            {
+                return false;
+            }
+
+            foreach(var pair in map)
+            {
+                if(!map2.ContainsKey(pair.Key))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         public static string MinWindow(string s, string t)
         {
@@ -493,34 +590,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             }
 
             return true;
-        }
-        public static int LongestSubstringWithKUnique(string input, int k)
-        {
-            int result = 0;
-            int i = 0, j = 0;
-            HashSet<char> hashset = new HashSet<char>();
-
-            while (j < input.Length)
-            {
-                hashset.Add(input[j]);
-
-                while (hashset.Count < k)
-                {
-                    j++;
-                    hashset.Add(input[j]);
-                }
-
-                if (hashset.Count == k)
-                {
-                    result = Math.Max(result, j - i + 1);
-                }
-
-                hashset.Remove(input[i]);
-                i++;
-                j++;
-            }
-
-            return result;
         }
 
         public static int LongestSubstringWithoutRepeating(string input)
@@ -1153,6 +1222,70 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             }
         }
 
+        public static int[] MaxSlidingWindow(int[] nums, int k)
+        {
+            List<int> result = new List<int>();
+
+            if(nums.Length==0)
+            {
+                return result.ToArray();
+            }
+
+            List<int> maxList = new List<int>();
+
+            int i = 0, j = 0;
+
+            while(j<nums.Length)
+            {
+                while(maxList.Count()>0 && maxList[maxList.Count-1]<nums[j])
+                {
+                    int toremove = maxList[maxList.Count - 1];
+
+                    maxList.Remove(toremove);
+                }
+
+                maxList.Add(nums[j]);
+
+                while(j-i+1<k)
+                {
+                    j++;
+
+                    while (maxList.Count() > 0 && maxList[maxList.Count - 1] < nums[j])
+                    {
+                        int toremove = maxList[maxList.Count - 1];
+
+                        maxList.Remove(toremove);
+                    }
+
+                    maxList.Add(nums[j]);
+                }
+
+                if(j-i+1==k)
+                {
+                    if(maxList.Count()>0)
+                    {
+                        result.Add(maxList[0]);
+                    }
+                }
+
+
+                if(maxList.Count()>0)
+                {
+                    if(maxList[0]==nums[i])
+                    {
+                        int temp = maxList[0];
+
+                        maxList.Remove(temp);
+                    }
+                }
+
+                i++;
+                j++;
+            }
+
+            return result.ToArray();
+        }
+
         public static void AddCharacterToDictionary(Dictionary<char, int> keyValuePairs, char charcater)
         {
             if (!keyValuePairs.ContainsKey(charcater))
@@ -1179,6 +1312,7 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             while (j < characters.Length)
             {
                 AddCharacterToDictionary(keyValuePairs, characters[j]);
+
                 while (keyValuePairs.Count() < k)
                 {
                     j++;

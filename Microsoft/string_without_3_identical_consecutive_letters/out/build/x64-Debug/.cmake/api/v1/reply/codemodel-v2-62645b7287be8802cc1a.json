@@ -1,0 +1,59 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "string_without_3_identical_consecutive_letters",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "string_without_3_identical_consecutive_letters::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-string_without_3_identical_consecutive_letters-Debug-dc74598303b3efdeb5bd.json",
+					"name" : "string_without_3_identical_consecutive_letters",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Abhishek.Sharma1/source/repos/Abhisharma499/Data-Structure/Microsoft/string_without_3_identical_consecutive_letters/out/build/x64-Debug",
+		"source" : "C:/Users/Abhishek.Sharma1/source/repos/Abhisharma499/Data-Structure/Microsoft/string_without_3_identical_consecutive_letters"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}

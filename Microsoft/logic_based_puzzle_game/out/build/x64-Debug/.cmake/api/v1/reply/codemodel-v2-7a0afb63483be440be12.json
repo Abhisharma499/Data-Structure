@@ -1,0 +1,59 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "logic_based_puzzle_game",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "logic_based_puzzle_game::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-logic_based_puzzle_game-Debug-ba77817e32a4ff4c5108.json",
+					"name" : "logic_based_puzzle_game",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Abhishek.Sharma1/source/repos/Abhisharma499/Data-Structure/Microsoft/logic_based_puzzle_game/out/build/x64-Debug",
+		"source" : "C:/Users/Abhishek.Sharma1/source/repos/Abhisharma499/Data-Structure/Microsoft/logic_based_puzzle_game"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}

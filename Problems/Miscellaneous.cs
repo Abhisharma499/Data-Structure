@@ -1036,7 +1036,7 @@ namespace TestProject.Problems
             return result;
         }
 
-        static void PowerSetBinary()
+        public static void PowerSetBinary()
         {
             List<List<int>> result = new List<List<int>>();
             List<int> y = new List<int> { 1, 2, 3 };
@@ -1046,7 +1046,7 @@ namespace TestProject.Problems
                 List<int> temp = new List<int>();
                 for (int j = 0; j <= 2; j++)
                 {
-                    if ((i & 1 << j) > 0)
+                    if ((i & 1 << j)>0)
                     {
                         temp.Add(y[j]);
                     }
@@ -1055,7 +1055,8 @@ namespace TestProject.Problems
                 result.Add(temp);
             }
 
-
+            //111
+              //010
         }
 
         public static int FindMin(int[] nums)
