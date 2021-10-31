@@ -38,3 +38,16 @@ C:\Users\Abhishek.Sharma1\Source\Repos\Abhisharma499\Data-Structure\obj\Debug\Da
 C:\Users\Abhishek.Sharma1\Source\Repos\Abhisharma499\Data-Structure\obj\Debug\Data Structure Concepts.csproj.CopyComplete
 C:\Users\Abhishek.Sharma1\Source\Repos\Abhisharma499\Data-Structure\obj\Debug\TestProject.exe
 C:\Users\Abhishek.Sharma1\Source\Repos\Abhisharma499\Data-Structure\obj\Debug\TestProject.pdb
+C:\Users\abhis\Source\Repos\Data-Structure\bin\Debug\Censored.txt
+C:\Users\abhis\Source\Repos\Data-Structure\bin\Debug\Input.txt
+C:\Users\abhis\Source\Repos\Data-Structure\bin\Debug\TestProject.exe.config
+C:\Users\abhis\Source\Repos\Data-Structure\bin\Debug\TestProject.exe
+C:\Users\abhis\Source\Repos\Data-Structure\bin\Debug\TestProject.pdb
+C:\Users\abhis\Source\Repos\Data-Structure\bin\Debug\C5.dll
+C:\Users\abhis\Source\Repos\Data-Structure\bin\Debug\Newtonsoft.Json.dll
+C:\Users\abhis\Source\Repos\Data-Structure\bin\Debug\C5.xml
+C:\Users\abhis\Source\Repos\Data-Structure\bin\Debug\Newtonsoft.Json.xml
+C:\Users\abhis\Source\Repos\Data-Structure\obj\Debug\Data Structure Concepts.csproj.AssemblyReference.cache
+C:\Users\abhis\Source\Repos\Data-Structure\obj\Debug\Data Structure Concepts.csproj.CoreCompileInputs.cache
+C:\Users\abhis\Source\Repos\Data-Structure\obj\Debug\TestProject.exe
+C:\Users\abhis\Source\Repos\Data-Structure\obj\Debug\TestProject.pdb

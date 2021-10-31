@@ -3,12 +3,295 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Dynamic;
 
 namespace TestProject.Problems
 {
     class SlidingWindow
     {
+        public static string MinWindow(string s, string t)
+        {
+        Dictionary<char,int> rs = new Dictionary<char,int>();
+        Dictionary<char,int> ps = new Dictionary<char,int>();
+            int startIndex=-1,endIndex =-1;
 
+        foreach(char ch in t)
+        {
+            if(ps.ContainsKey(ch))
+            {
+                ps[ch]++;
+            }
+            else
+            {
+                ps.Add(ch,1);
+            }
+        }
+
+        int i=0,j=0, result = int.MaxValue;
+
+        while(j<s.Length)
+        {
+            if(rs.ContainsKey(s[j]))
+            {
+                rs[s[j]]++;
+            }
+            else
+            {
+                rs.Add(s[j],1);
+            }
+
+            //s = "ADOBECODEBANC", t = "ABC"
+            while(!Test(rs,ps))
+            {
+                j++;
+
+                if(j==s.Length)
+                {
+                    j--;
+                    break;
+                }
+
+                if(rs.ContainsKey(s[j]))
+               {
+                rs[s[j]]++;
+                }
+                else
+                {
+                rs.Add(s[j],1);
+               }
+            }
+
+            if(Test(rs,ps))
+            {
+                result = Math.Min(result, j-i+1);
+            }
+
+            while(Test(rs,ps))
+            {
+                 if(Test(rs,ps))
+                 {
+                    result = Math.Min(result, j-i+1);
+                        startIndex=i;
+                        endIndex=j;
+                 }
+                if(rs.ContainsKey(s[i]))
+                {
+                    rs[s[i]]--;
+                }
+
+                if(rs[s[i]]==0)
+                {
+                    rs.Remove(s[i]);
+                }
+
+                i++;
+            }
+
+            j++;
+        }
+
+        return s.Substring(startIndex,endIndex-startIndex+1);
+    }
+
+    public static bool Test(Dictionary<char,int> rs,Dictionary<char,int> ps)
+    {
+        foreach(var pair in ps)
+        {
+            if(!rs.ContainsKey(pair.Key))
+            {
+                return false;
+            }
+            else
+            {
+                if(rs[pair.Key]<pair.Value)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+        public static int LengthOfLongestSubstringKDistinct(string s, int k)
+    {
+        Dictionary<char,int> map = new Dictionary<char,int>();
+
+        int i=0,j=0, result = int.MinValue;
+
+        while(j<s.Length)
+        {
+            if(map.ContainsKey(s[j]))
+            {
+                map[s[j]]++;
+            }
+            else
+            {
+                map.Add(s[j],1);
+            }
+
+            while(map.Count()<k)
+            {
+                j++;
+
+                if(j==s.Length)
+                {
+                    break;
+                }
+                if(map.ContainsKey(s[j]))
+                 {
+                   map[s[j]]++;
+                 }
+                 else
+                 {
+                map.Add(s[j],1);
+                 }
+            }
+
+            if(map.Count()<=k)
+            {
+                result = Math.Max(result, j-i+1);
+            }
+
+            while(map.Count()>k)
+            {
+                if(map.ContainsKey(s[i]))
+                {
+                    map[s[i]]--;
+
+                    if(map[s[i]]==0)
+                    {
+                        map.Remove(s[i]);
+                    }
+
+                    i++;
+                }
+            }
+
+             if(map.Count()<=k)
+            {
+                result = Math.Max(result, j-i+1);
+            }
+
+            j++;
+        }
+
+        return result;
+    }
+        public static int MaxWinSizeOfSumK(int [] nums, int k)
+        {
+            int i=0,j=0,result = int.MinValue,sum=0;
+
+            while(j<nums.Length)
+            {
+                sum = sum + nums[j];
+
+                while(sum<k)
+                {
+                    j++;
+
+                    if(j==nums.Length)
+                    {
+                        break;
+                    }
+
+                    sum = sum + nums[j];
+                }
+
+                if(sum == k)
+                {
+                    result = Math.Max(result, j-i+1);
+                }
+
+                while(sum>k)
+                {
+                    sum = sum - nums[i];
+                    i++;
+                }
+
+                if(sum == k)
+                {
+                    result = Math.Max(result, j-i+1);
+                }
+
+                j++;
+            }
+
+            return result;
+        }
+
+        public static int MaxSumWithSizeK(int[] nums, int k)
+        {
+            int result = int.MinValue;
+            int sum =0;
+
+            int i=0,j=0;
+
+            while(j<nums.Length)
+            {
+                sum = sum + nums[j];
+
+                while(j-i+1<k)
+                {
+                    j++;
+                    sum = sum + nums[j];
+                }
+
+                if(j-i+1==k)
+                {
+                    result = Math.Max(sum,result);
+                }
+
+                sum = sum - nums[i];
+                i++;
+                j++;
+            }
+
+            return result;
+        }
+
+        public static void PrintNeg(int[] nums, int k)
+        {
+            int i=0,j=0;
+            List<int> negative = new List<int>();
+
+            //12,-1,7,8,-15,30,16,28
+            while(j<nums.Length)
+            {
+                if(nums[j]<0)
+                {
+                    negative.Add(nums[j]);
+                }
+
+                while(j-i+1<k)
+                {
+                    j++;
+                    if(nums[j]<0)
+                    {
+                        negative.Add(nums[j]);
+                    }
+                }
+
+                if(j-i+1==k)
+                {
+                    if(negative.Count()>0)
+                    {
+                        Console.WriteLine(negative[0]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("A");
+                    }
+                }
+
+                if(nums[i]<0)
+                {
+                    negative.Remove(negative[0]);
+                }
+
+                i++;
+                j++;
+            }
+        }
 
         //Input: s = "aabcbcdbca", t = "dbca"
 
@@ -109,13 +392,12 @@ namespace TestProject.Problems
             return true;
         }
 
-        public static string MinWindow(string s, string t)
+        public static string MinWindow2(string s, string t)
         {
             int minLength = int.MaxValue;
             string result = string.Empty;
             Dictionary<char, int> map = new Dictionary<char, int>();
             Dictionary<char, int> helper = new Dictionary<char, int>();
-
 
             if (s.Length < t.Length)
             {
@@ -304,10 +586,7 @@ namespace TestProject.Problems
                         }
 
                         map[s[i]]++;
-
                     }
-
-
 
                     i++;
                 }
@@ -321,7 +600,6 @@ namespace TestProject.Problems
             }
 
             return s.Substring(startIndex, endIndex - startIndex + 1);
-
         }
 
         public static bool CompareDictionary(Dictionary<char, int> created, Dictionary<char, int> original)
@@ -382,8 +660,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             }
 
             return result;
-
-
         }
         public static int subarraySum2(int[] nums, int k)
         {
@@ -443,12 +719,7 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                 }
             }
 
-
-
-
             return count;
-
-
         }
         public static string MinimumWindowSubstring(string large, string small)
         {
@@ -660,7 +931,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                 csum -= numbers[i];
                 i++;
                 j++;
-
             }
 
             return result;
@@ -693,7 +963,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             }
 
             return maxSum;
-
         }
 
         public static void FirstNegativeNumberInWindow(int[] numbers, int windowSize)
@@ -777,7 +1046,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                     }
 
                     maxNumbers.Add(numbers[j]);
-
                 }
 
                 //[1,3,1,2,0,5]
@@ -789,7 +1057,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                         result.Add(maxNumbers[0]);
                     }
                 }
-
 
                 if (maxNumbers.Count > 0)
                 {
@@ -858,7 +1125,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                     }
                 }
 
-
                 if (numbers[i] == tempResult[0])
                 {
                     tempResult.RemoveAt(0);
@@ -869,7 +1135,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             }
 
             return maxResult;
-
         }
 
         private static void AddNumberToMaxList(int[] numbers, List<int> tempResult, int j)
@@ -880,7 +1145,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             }
             else if (tempResult[tempResult.Count() - 1] < numbers[j])
             {
-
                 while (tempResult.Count > 0 && tempResult[tempResult.Count() - 1] < numbers[j])
                 {
                     tempResult.RemoveAt(tempResult.Count() - 1);
@@ -891,7 +1155,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             else
             {
                 tempResult.Add(numbers[j]);
-
             }
         }
 
@@ -940,11 +1203,9 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
 
                 i++;
                 j++;
-
             }
 
             return result;
-
         }
 
         private static int MaxInWindowSizeOfK(int[] nums, int k)
@@ -952,7 +1213,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             int i = 0, j = 0;
             int result = int.MinValue;
             int sum = 0;
-
 
             //2, 5, 1, 8, 2, 9, 1
             while (j <= nums.Length - 1)
@@ -969,7 +1229,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                 {
                     result = Math.Max(result, sum);
                 }
-
 
                 sum = sum - nums[i];
                 i++;
@@ -994,7 +1253,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                     j++;
 
                     tempSum += numbers[j];
-
                 }
 
                 if (tempSum == sum)
@@ -1070,7 +1328,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                     }
 
                     sum = sum + numbers[j];
-
                 }
 
                 if (sum == k)
@@ -1140,7 +1397,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                     }
                 }
 
-
                 if (j - i + 1 == k)
                 {
                     if (negativeNumbers.Count() > 0)
@@ -1163,7 +1419,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
 
                 i++;
                 j++;
-
             }
         }
 
@@ -1199,7 +1454,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                     continue;
                 }
 
-
                 //1 3 -1 -3 5 3 6 7
                 if (maxNumbers.Max() < numbers[j])
                 {
@@ -1218,7 +1472,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
 
                 i++;
                 j++;
-
             }
         }
 
@@ -1267,7 +1520,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                         result.Add(maxList[0]);
                     }
                 }
-
 
                 if(maxList.Count()>0)
                 {
@@ -1346,12 +1598,9 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                 }
 
                 j++;
-
-
             }
 
             return result;
-
         }
 
         public static int LongestSubstringWithWithOutRepeatingCharacter(char[] characters)
@@ -1410,7 +1659,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             }
 
             return result;
-
         }
 
         public static int LongestSubstringWithWithOutRepeatingCharacter2(string mystring)
@@ -1468,14 +1716,12 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
             }
 
             return result;
-
         }
 
         public static int CountOccuranceOfAnagram(string input, int k, Dictionary<char, int> patternmap, string sample)
         {
             int i = 0, j = 0, count = 0, resultCount = 0;
             Dictionary<char, int> sourceMap = new Dictionary<char, int>();
-
 
             foreach (char ch in sample)
             {
@@ -1492,7 +1738,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
 
             while (j < input.Length)
             {
-
                 if (sourceMap.ContainsKey(input[j]))
                 {
                     sourceMap[input[j]]++;
@@ -1515,7 +1760,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                     {
                         sourceMap.Add(input[j], 1);
                     }
-
                 }
 
                 //aabaabaa //aaba
@@ -1526,7 +1770,6 @@ elements summing up-to 0 is { -2, 2, -8, 1, 7}
                         resultCount++;
                     }
                 }
-
 
                 //aabaabaa //aaba
                 if (sourceMap.ContainsKey(input[i]))

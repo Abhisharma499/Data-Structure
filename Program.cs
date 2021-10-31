@@ -351,34 +351,85 @@ namespace DataStructure
             return (int)dp[s.Length][y];
         }
 
+        public static bool SearchMatrix(int[][] matrix, int target) 
+        {
+        int rows = matrix.GetUpperBound(0)+1;
+        int cols = matrix[0].Length;
+        
+        int rs = 0;
+        int cs = cols-1;
+        
+        while(rs<rows && cs<cols)
+        {
+            if(target==matrix[rs][cs])
+            {
+                return true;
+            }
+            else if(target<matrix[rs][cs])
+            {
+                cs--;
+            }
+            else
+            {
+                rs++;
+            }
+        }
+        
+        return false;
+      }
+
         static void Main() 
         {
+           var result =  IsValid("")
+        }
 
-            string pathSource = "C:\\Users\\Abhishek.Sharma1\\Downloads\\1.txt";
-            string pathNew = string.Empty;
-            //var stream = new FileStream($"C:\\Users\\Abhishek.Sharma1\\Downloads\\Software_Design.pdf",FileAccess.Read,);
-
-            try
+         public static bool IsValid(string s) 
+    {
+       if(string.IsNullOrEmpty(s))
+       {
+           return true;
+       }
+        
+        if(s.Length==1)
+        {
+            return false;
+        }
+        
+        Stack<char> stack = new Stack<char>();
+        List<char> ob = new List<char>(){'(','{','['};
+        List<char> cb = new List<char>(){')','}',']'};
+        
+        foreach(char ch in s)
+        {
+            if(stack.Count()==0)
             {
-                // Open the text file using a stream reader.
-                using (var sr = new StreamReader(pathSource))
+                stack.Push(ch);
+            }
+            else if(ob.Contains(ch))
+            {
+                stack.Push(ch);
+                
+            }
+            else
+            {
+                int index = cb.IndexOf(ch);
+                char tofind = ob[index];
+                
+                if(stack.Peek()!=tofind)
                 {
-                    // Read the stream as a string, and write the string to the console.
-                    Console.WriteLine(sr.ReadToEnd());
+                    return false;
+                }
+                else
+                {
+                    stack.Pop();
                 }
             }
-            catch (IOException e)
-            {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
-            }
-
+        }
+        
+        return true;
+        
     }
 
-        public static void Test(int a, params int[] nums)
-        {
-
-        }
 
         static void printDistinct(int[] arr)
         {
