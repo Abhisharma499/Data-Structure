@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using TestProject;
-using TestProject.Problems;
-using TestProject.Problems.DictionaryTypes;
-using TestProject.Problems.Stack;
-using TestProject.System_Design;
 
 namespace DataStructure
 {
@@ -30,7 +23,7 @@ namespace DataStructure
         List<string> words;
         public string NumberToWords(int num)
         {
-           
+
             numbers = new List<int>() { 1000000000, 1000000, 1000, 100 };
             words = new List<string>() { "Billion", "Million", "Thousand", "Hundred" };
 
@@ -351,84 +344,298 @@ namespace DataStructure
             return (int)dp[s.Length][y];
         }
 
-        public static bool SearchMatrix(int[][] matrix, int target) 
+        public static bool SearchMatrix(int[][] matrix, int target)
         {
-        int rows = matrix.GetUpperBound(0)+1;
-        int cols = matrix[0].Length;
-        
-        int rs = 0;
-        int cs = cols-1;
-        
-        while(rs<rows && cs<cols)
-        {
-            if(target==matrix[rs][cs])
-            {
-                return true;
-            }
-            else if(target<matrix[rs][cs])
-            {
-                cs--;
-            }
-            else
-            {
-                rs++;
-            }
-        }
-        
-        return false;
-      }
+            int rows = matrix.GetUpperBound(0) + 1;
+            int cols = matrix[0].Length;
 
-        static void Main() 
-        {
-           var result =  IsValid("")
-        }
+            int rs = 0;
+            int cs = cols - 1;
 
-         public static bool IsValid(string s) 
-    {
-       if(string.IsNullOrEmpty(s))
-       {
-           return true;
-       }
-        
-        if(s.Length==1)
-        {
-            return false;
-        }
-        
-        Stack<char> stack = new Stack<char>();
-        List<char> ob = new List<char>(){'(','{','['};
-        List<char> cb = new List<char>(){')','}',']'};
-        
-        foreach(char ch in s)
-        {
-            if(stack.Count()==0)
+            while (rs < rows && cs < cols)
             {
-                stack.Push(ch);
-            }
-            else if(ob.Contains(ch))
-            {
-                stack.Push(ch);
-                
-            }
-            else
-            {
-                int index = cb.IndexOf(ch);
-                char tofind = ob[index];
-                
-                if(stack.Peek()!=tofind)
+                if (target == matrix[rs][cs])
                 {
-                    return false;
+                    return true;
+                }
+                else if (target < matrix[rs][cs])
+                {
+                    cs--;
                 }
                 else
                 {
-                    stack.Pop();
+                    rs++;
                 }
             }
+
+            return false;
         }
-        
-        return true;
-        
-    }
+
+        public static void NextraTest(int[] nums)
+        {
+            Dictionary<int, int> map = new Dictionary<int, int>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (map.ContainsKey(nums[i]))
+                {
+                    map[nums[i]]++;
+                }
+                else
+                {
+                    map.Add(nums[i], 1);
+                }
+            }
+
+            map = map.OrderByDescending(x => x.Value).ThenByDescending(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+
+            foreach (var item in map)
+            {
+                Console.WriteLine(item.Key);
+            }
+        }
+
+        static void Main()
+        {
+            FirstMissingPositive(new int[] { 1, 2, 0 });
+        }
+
+        public static int FirstMissingPositive(int[] arr)
+        {
+            if (arr.Length == 0)
+            {
+                return 1;
+            }
+
+            int i = 0;
+            //3,4,-1,1
+            while (i < arr.Length)
+            {
+                if (arr[i] > 0 && arr[i] <= arr.Length && arr[i] != arr[arr[i] - 1])
+                {
+                    int otherIndex = arr[i] - 1;
+                    int temp = arr[otherIndex];
+                    arr[otherIndex] = arr[i];
+                    arr[i] = temp;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            for (int k = 0; k < arr.Length; k++)
+            {
+                if (arr[k] != k + 1)
+                {
+                    return k + 1;
+                }
+            }
+
+            return arr.Length + 1;
+        }
+
+        public static int NumSquares(int n)
+        {
+            int[] dp = new int[n + 1];
+            dp[0] = 0;
+            dp[1] = 1;
+
+            for (int i = 2; i <= n; i++)
+            {
+                int min = int.MaxValue;
+
+                for (int j = 1; j <= i * i; j++)
+                {
+                    int temp = i - j * j;
+
+                    min = Math.Min(dp[temp], min);
+
+                }
+
+                dp[i] = min + 1;
+            }
+
+            return dp[n];
+        }
+
+        public static IList<IList<string>> GroupAnagrams(string[] strs)
+        {
+            Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+
+            List<IList<string>> result = new List<IList<string>>();
+
+            foreach (var str in strs)
+            {
+                string org = str;
+                string sortted = new String(str.OrderBy(x => x).ToArray());
+
+
+                if (map.ContainsKey(sortted))
+                {
+                    map[sortted].Add(org);
+                }
+                else
+                {
+                    map.Add(sortted, new List<string>() { org });
+                }
+            }
+
+            foreach (var pair in map)
+            {
+                result.Add(pair.Value);
+            }
+
+            return result;
+        }
+
+        public static int Search(int[] nums, int target)
+        {
+            if (nums.Length == 0)
+            {
+                return -1;
+            }
+
+            int start = 0, end = nums.Length - 1;
+
+            while (start < end)
+            {
+                int mid = (start) + (end - start) / 2;
+
+                if (nums[mid] == target)
+                {
+                    return mid;
+                }
+                else if (nums[start] <= nums[mid])
+                {
+                    if (target >= nums[start] && target <= nums[mid])
+                    {
+                        end = mid - 1;
+                    }
+                    else
+                    {
+                        start = mid + 1;
+                    }
+                }
+
+                else if (nums[mid] <= nums[end])
+                {
+                    if (target >= nums[mid] && target <= nums[end])
+                    {
+                        start = mid + 1;
+                    }
+                    else
+                    {
+                        end = mid - 1;
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        public static int BasicCalculator2(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return 0;
+            }
+
+            char sign = '+';
+            Stack<int> stack = new Stack<int>();
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == ' ')
+                {
+                    continue;
+                }
+                if (char.IsDigit(s[i]))
+                {
+                    int val = 0;
+
+                    while (i < s.Length && char.IsDigit(s[i]))
+                    {
+                        val = val * 10 + s[i] - '0';
+                        i++;
+                    }
+
+                    i--;
+
+                    if (sign == '-')
+                    {
+                        stack.Push(val * -1);
+                    }
+                    else if (sign == '*')
+                    {
+                        stack.Push(stack.Pop() * val);
+                    }
+                    else if (sign == '/')
+                    {
+                        stack.Push(stack.Pop() / val);
+                    }
+                    else
+                    {
+                        stack.Push(val);
+                    }
+
+                    sign = '+';
+                }
+                else
+                {
+                    sign = s[i];
+                }
+            }
+
+            return stack.Sum();
+        }
+
+        public static bool IsValid(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return true;
+            }
+
+            if (s.Length == 1)
+            {
+                return false;
+            }
+
+            Stack<char> stack = new Stack<char>();
+            List<char> ob = new List<char>() { '(', '{', '[' };
+            List<char> cb = new List<char>() { ')', '}', ']' };
+
+            foreach (char ch in s)
+            {
+                if (stack.Count() == 0)
+                {
+                    stack.Push(ch);
+                }
+                else if (ob.Contains(ch))
+                {
+                    stack.Push(ch);
+
+                }
+                else
+                {
+                    int index = cb.IndexOf(ch);
+                    char tofind = ob[index];
+
+                    if (stack.Peek() != tofind)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        stack.Pop();
+                    }
+                }
+            }
+
+            return true;
+
+        }
 
 
         static void printDistinct(int[] arr)

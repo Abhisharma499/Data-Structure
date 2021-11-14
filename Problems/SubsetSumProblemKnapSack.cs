@@ -6,6 +6,47 @@ namespace TestProject.Problems
 {
     public static class KnapSackProblem
     {
+        public static bool CanPartition(int[] nums)
+        {
+            if (nums.Sum() % 2 == 1)
+            {
+                return false;
+            }
+
+            int length = nums.Length;
+            int target = nums.Sum() / 2;
+
+            bool[,] mat = new bool[length + 1, target+1];
+            //int target = nums.Sum() / 2;
+
+            mat[0, 0] = true;
+            for (int j = 1; j <= target; j++)
+            {
+                mat[0, j] = false;
+            }
+
+            for (int i = 1; i <= length; i++)
+            {
+                mat[i, 0] = true;
+            }
+
+            for (int i = 1; i <= length; i++)
+            {
+                for (int j = 1; j <= target; j++)
+                {
+                    if (nums[i - 1] <= j)
+                    {
+                        mat[i, j] = mat[i - 1, j - nums[i - 1]] || mat[i - 1, j];
+                    }
+                    else
+                    {
+                        mat[i, j] = mat[i - 1, j];
+                    }
+                }
+            }
+
+            return mat[length, target];
+        }
         public static bool IsSubsetPresent(int[] array, int sum)
         {
             int rows = array.Length + 1;
